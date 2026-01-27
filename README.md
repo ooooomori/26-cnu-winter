@@ -18,7 +18,7 @@
 ## 🧑‍💻 프로젝트 참여자
   - <img src="https://github.com/ooooomori.png" width="20"> **이선우** [@ooooomori](https://github.com/ooooomori) - 프론트엔드
   - <img src="https://github.com/sohnmj.png" width="20"> **손명진** [@sohnmj](https://github.com/sohnmj) - 백엔드
-  - <img src="https://github.com/theoeugene.png" width="20"> **이유진** [@sohnmj](https://github.com/theoeugene) - 백엔드
+  - <img src="https://github.com/theoeugene.png" width="20"> **이유진** [@theoeugene](https://github.com/theoeugene) - 백엔드
 
 ## 📆 개발 기간
 - 2026-01-23 ~
