@@ -1,16 +1,24 @@
-# React + Vite
+# 프로젝트 소개
+2026년 겨울방학 서강대학교 CNU 입문 프로젝트입니다.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔍 주요 기능
+ - 단어 뜻 및 활용 가능한 예문 검색
+ - LLM을 이용해 단어별 학습용 예문 생성
+ - 나만의 단어장에 검색한 단어와 예문 저장
+ - 단어장에 단어 및 예문 추가, 삭제, 편집 등
+ - 단어장에 추가한 단어로 간단한 복습용 문제 풀기
 
-Currently, two official plugins are available:
+## 🪄 개발 스택
+### FRONT-END
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![MaterialUI](https://img.shields.io/badge/Material%20UI-%23FFFFFF?style=for-the-badge&logo=MUI&logoColor=#007FFF)
+### BACK-END
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧑‍💻 프로젝트 참여자
+  - <img src="https://github.com/ooooomori.png" width="20"> **이선우** [@ooooomori](https://github.com/ooooomori) - 프론트엔드
+  - <img src="https://github.com/sohnmj.png" width="20"> **손명진** [@sohnmj](https://github.com/sohnmj) - 백엔드
+  - <img src="https://github.com/theoeugene.png" width="20"> **이유진** [@theoeugene](https://github.com/theoeugene) - 백엔드
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📆 개발 기간
+- 2026-01-23 ~
