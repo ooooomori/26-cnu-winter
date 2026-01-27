@@ -13,7 +13,7 @@
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![MaterialUI](https://img.shields.io/badge/Material%20UI-%23FFFFFF?style=for-the-badge&logo=MUI&logoColor=#007FFF)
 ### BACK-END
-미정
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 
 ## 🧑‍💻 프로젝트 참여자
   - <img src="https://github.com/ooooomori.png" width="20"> **이선우** [@ooooomori](https://github.com/ooooomori) - 프론트엔드
