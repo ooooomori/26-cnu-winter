@@ -1,0 +1,35 @@
+
+---
+
+src/main/java/.../DictionaryController.java  
+**백엔드에게 넘겨줄 “뼈대 코드”**
+
+```java
+package com.example.demo.dictionary;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+@RestController
+public class DictionaryController {
+
+    @GetMapping("/api/dictionary")
+    public String searchDictionary(@RequestParam String word) {
+
+        // TODO: API Key는 추후 application.yml로 분리
+        String apiKey = "YOUR_API_KEY";
+
+        String url = "https://krdict.korean.go.kr/api/search"
+                + "?key=" + apiKey
+                + "&q=" + word
+                + "&req_type=xml";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 한국어기초사전 Open API 호출 후
+        // XML 응답을 그대로 반환
+        return restTemplate.getForObject(url, String.class);
+    }
+}
