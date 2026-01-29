@@ -2,15 +2,20 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Input from "@mui/material/Input";
+import Link from "@mui/material/Link";
 
 import IconButton from "@mui/material/IconButton";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import MainInput from "../components/MainInput";
+
+import useAuthStore from "../store/useAuthStore";
+
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
+    const { isLoggedIn, user, logout, openModal } = useAuthStore();
+
     return (
         <Grid
             container
@@ -19,13 +24,14 @@ export default function HomePage() {
             justifyContent="center"
             alignItems="center"
             sx={{
-                overflow: "hidden",
-                height: "100dvh",
+                flex: 1,
             }}
         >
+            <Box sx={{ flexGrow: 1 }} />
             <Grid>
                 <h1>LOREM IPSUM</h1>
             </Grid>
+            <Box sx={{ flexGrow: 1 }} />
             <Grid>
                 <Box
                     component="form"
@@ -36,7 +42,7 @@ export default function HomePage() {
                         alignItems: "center",
                         justifyContent: "center",
                         mx: "auto",
-                        width: { xs: 300, sm: 400 },
+                        width: { xs: "95vw", sm: "500px" },
                     }}
                 >
                     <MainInput />
@@ -48,6 +54,7 @@ export default function HomePage() {
                     startIcon={<BookOutlinedIcon />}
                     size="large"
                     sx={{ flex: 1 }}
+                    onClick={!isLoggedIn ? openModal : undefined}
                 >
                     내 단어장 열어보기
                 </Button>
