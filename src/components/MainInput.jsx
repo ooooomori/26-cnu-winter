@@ -1,38 +1,38 @@
 import * as React from "react";
 import Button from "@mui/joy/Button";
-import Divider from "@mui/joy/Divider";
+
 import Input from "@mui/joy/Input";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
-import Stack from "@mui/joy/Stack";
+import LanguageSelect from "./LanguageSelect";
+
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function MainInput() {
-    const [lang, setLang] = React.useState("eng");
+    const [lang, setLang] = React.useState("en");
+    const inputRef = React.useRef(null);
+    const handleLangChange = (_, newValue) => {
+        setLang(newValue);
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, 10);
+    };
     return (
         <Input
             placeholder="공부할 단어를 검색하세요"
+            slotProps={{
+                input: {
+                    inputMode: "search",
+                    autoCapitalize: "none",
+                    autoComplete: "off",
+                    autoCorrect: "off",
+                    spellCheck: "false",
+                    ref: inputRef,
+                },
+            }}
             startDecorator={
                 <React.Fragment>
-                    <Divider orientation="vertical" />
-                    <Select
-                        variant="plain"
-                        value={lang}
-                        onChange={(_, value) => setLang(value)}
-                        slotProps={{
-                            listbox: {
-                                variant: "outlined",
-                            },
-                        }}
-                        sx={{
-                            ml: -1.5,
-                            "&:hover": { bgcolor: "transparent" },
-                        }}
-                    >
-                        <Option value="eng">영어</Option>
-                        <Option value="ger">독일어</Option>
-                        <Option value="kor">한국어</Option>
-                    </Select>
+                    <LanguageSelect lang={lang} onChange={handleLangChange} />
                 </React.Fragment>
             }
             endDecorator={
@@ -47,7 +47,16 @@ export default function MainInput() {
                     }}
                 ></Button>
             }
-            sx={{ width: "100%", paddingY: "5px" }}
+            sx={{
+                "--Input-radius": "20px",
+                paddingY: "10px",
+                width: "100%",
+                fontSize: "1.2rem",
+                "& input::placeholder": {
+                    fontSize: "1rem",
+                    transform: "translateY(-1.5px)",
+                },
+            }}
         />
     );
 }

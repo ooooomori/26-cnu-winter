@@ -1,33 +1,33 @@
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 import HomePage from "./pages/HomePage.jsx";
 //import SearchPage from "./pages/SearchPage.jsx";
 //import VocaPage from "./pages/VocaPage.jsx";
-
-import Button from "@mui/material/Button";
-import AppleIcon from "@mui/icons-material/Apple";
+import LoginModal from "./components/LoginModal.jsx";
+import Layout from "./components/Layout.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <HomePage />,
+        element: <Layout />,
+        children: [
+            {
+                path: "/",
+                element: <HomePage />, // 메인 화면
+            },
+        ],
     },
-    /*{
-        path: "search",
-        element: <SearchPage />,
-    },
-    {
-        path: "voca",
-        element: <VocaPage />,
-    },*/
 ]);
 
 function App() {
-    return <RouterProvider router={router} />;
+    return (
+        <>
+            <RouterProvider router={router} />
+            <LoginModal />
+        </>
+    );
 }
 
 export default App;
