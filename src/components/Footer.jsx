@@ -1,37 +1,66 @@
-import Stack from "@mui/material/Stack";
+import Box from "@mui/joy/Box";
+import Stack from "@mui/joy/Stack";
+import Typography from "@mui/joy/Typography";
 import Link from "@mui/joy/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import packageJson from "../../package.json";
 
 export default function Footer() {
     return (
-        <Stack
-            direction={"row"}
-            justifyContent={"center"}
-            spacing={3}
-            sx={{ textDecoration: "none", paddingBottom: "20px" }}
-        >
-            <Link
-                href="https://github.com/ooooomori/26-cnu-winter"
-                target="_blank"
-                underline="hover"
-                color="neutral"
-                level="body-sm"
-                sx={{
-                    display: "inline-flex", // Flexbox 모드 활성화
-                    alignItems: "center", // 세로 중앙 정렬
-                    gap: 0.5, // 아이콘과 글자 사이 간격
-                    textDecoration: "none",
-                }}
+        <Box component="footer" sx={{ py: 3 }}>
+            <Stack
+                direction="row"
+                justifyContent="center"
+                spacing={1}
+                divider={
+                    <Typography
+                        sx={{ color: "neutral.300", alignSelf: "center" }}
+                    >
+                        ·
+                    </Typography>
+                }
             >
-                <GitHubIcon />
-                Github
-            </Link>
-            <Link underline="hover" color="neutral" level="body-sm">
-                이용약관
-            </Link>
-            <Link underline="hover" color="neutral" level="body-sm">
-                개인정보처리방침
-            </Link>
-        </Stack>
+                <Link
+                    href="https://github.com/ooooomori/26-cnu-winter"
+                    target="_blank"
+                    rel="noopener"
+                    underline="hover"
+                    color="neutral"
+                    level="body-xs"
+                    sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                        textDecoration: "none",
+                    }}
+                >
+                    <GitHubIcon sx={{ fontSize: "0.9rem" }} />
+                    Github
+                </Link>
+                <Link
+                    underline="hover"
+                    color="neutral"
+                    level="body-xs"
+                    href="#"
+                >
+                    이용약관
+                </Link>
+                <Link
+                    underline="hover"
+                    color="neutral"
+                    level="body-xs"
+                    href="#"
+                >
+                    개인정보처리방침
+                </Link>
+            </Stack>
+
+            <Typography
+                level="body-xs"
+                sx={{ textAlign: "center", color: "text.tertiary" }}
+            >
+                © 2026 두바이쫀득쿠키 · v{packageJson.version}
+            </Typography>
+        </Box>
     );
 }

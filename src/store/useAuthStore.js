@@ -6,10 +6,13 @@ const useAuthStore = create(
         (set) => ({
             isLoggedIn: false,
             user: null,
-            isModalOpen: false, // 기본값
-            openModal: () => set({ isModalOpen: true }),
-            closeModal: () => set({ isModalOpen: false }),
-            // ... 나머지
+            isLoginModalOpen: false,
+            isSignUpModalOpen: false,
+            openLoginModal: () => set({ isLoginModalOpen: true }),
+            closeLoginModal: () => set({ isLoginModalOpen: false }),
+            openSignUpModal: () => set({ isSignUpModalOpen: true }),
+            closeSignUpModal: () => set({ isSignUpModalOpen: false }),
+            logout: () => set({ isLoggedIn: false, user: null }),
         }),
         {
             name: "auth-storage",

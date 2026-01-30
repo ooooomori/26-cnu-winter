@@ -18,7 +18,7 @@ export default function LanguageSelect({ lang, onChange }) {
                     es: "ES",
                     en: "US",
                     ja: "JP",
-                    ko: "KR",
+                    fr: "FR",
                 };
                 return (
                     <Box
