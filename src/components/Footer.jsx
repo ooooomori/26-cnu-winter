@@ -7,7 +7,7 @@ import packageJson from "../../package.json";
 
 export default function Footer() {
     return (
-        <Box component="footer" sx={{ py: 3 }}>
+        <Box component="footer" sx={{ pt: 5 }}>
             <Stack
                 direction="row"
                 justifyContent="center"

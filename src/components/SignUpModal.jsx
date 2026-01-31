@@ -25,6 +25,7 @@ export default function SignUpModal() {
     const [isIdAvailable, setIsIdAvailable] = useState(null); // TODO: 실제 아이디 중복 확인 로직으로 교체
     const handleClose = () => {
         setId("");
+        setIsIdAvailable(null);
         setPassword("");
         setPassword2("");
         closeSignUpModal();
@@ -66,11 +67,9 @@ export default function SignUpModal() {
                     <Stack spacing={2}>
                         <FormControl
                             color={
-                                isIdAvailable === null
-                                    ? "neutral"
-                                    : isIdAvailable
+                                isIdAvailable
                                       ? "success"
-                                      : "danger"
+                                      : "neutral"
                             }
                         >
                             <FormLabel>아이디</FormLabel>
@@ -92,7 +91,7 @@ export default function SignUpModal() {
                                 }
                             />
                             {
-                                !isIdValid && id.length > 0 && (
+                                isIdAvailable === null && id.length > 0 && (
                                     <FormHelperText>
                                         아이디는 5~15자의 영문, 숫자, 밑줄(_)만
                                         사용 가능해요.
@@ -101,7 +100,7 @@ export default function SignUpModal() {
                             }
                             {isIdAvailable === false && (
                                 <FormHelperText>
-                                    <InfoOutlined color="danger" />
+                                    <InfoOutlined />
                                     이미 사용중인 아이디에요.
                                 </FormHelperText>
                             )}
@@ -113,11 +112,9 @@ export default function SignUpModal() {
                             )}
                         </FormControl>
                         <FormControl color={
-                                password.length === 0
-                                    ? "netural"
-                                    : isPasswordValid
+                                isPasswordValid
                                       ? "success"
-                                      : "danger"
+                                      : "neutral"
                             }>
                             <FormLabel>비밀번호</FormLabel>
                             <Input
@@ -128,7 +125,7 @@ export default function SignUpModal() {
                             />
                             {!isPasswordValid && password.length > 0 && (
                                 <FormHelperText>
-                                    <InfoOutlined color="danger" /> 비밀번호는 8자 이상으로 설정해주세요.
+                                    <InfoOutlined /> 비밀번호는 8자 이상으로 설정해주세요.
                                 </FormHelperText>
                             )}
                             {isPasswordValid && (
@@ -140,11 +137,9 @@ export default function SignUpModal() {
                         </FormControl>
                         <FormControl
                             color={
-                                password2.length === 0
-                                    ? "netural"
-                                    : isPasswordMatch
+                                isPasswordMatch
                                       ? "success"
-                                      : "danger"
+                                      : "neutral"
                             }
                         >
                             <FormLabel>비밀번호 확인</FormLabel>
@@ -156,7 +151,7 @@ export default function SignUpModal() {
                             />
                             {!isPasswordMatch && password2.length > 0 && (
                                 <FormHelperText>
-                                    <InfoOutlined color="danger" /> 비밀번호가
+                                    <InfoOutlined /> 비밀번호가
                                     일치하지 않아요.
                                 </FormHelperText>
                             )}

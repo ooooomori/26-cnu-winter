@@ -1,8 +1,12 @@
 import Select, { selectClasses } from "@mui/joy/Select";
+
+import { COUNTRY_MAP } from "../constants/languages";
+
 import Box from "@mui/joy/Box";
 import Option from "@mui/joy/Option";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import ReactCountryFlag from "react-country-flag";
+
 export default function LanguageSelect({ lang, onChange }) {
     return (
         <Select
@@ -12,14 +16,6 @@ export default function LanguageSelect({ lang, onChange }) {
             onChange={onChange}
             renderValue={(selected) => {
                 if (!selected) return null;
-                const countryMap = {
-                    de: "DE",
-                    ru: "RU",
-                    es: "ES",
-                    en: "US",
-                    ja: "JP",
-                    fr: "FR",
-                };
                 return (
                     <Box
                         sx={{
@@ -30,7 +26,7 @@ export default function LanguageSelect({ lang, onChange }) {
                         }}
                     >
                         <ReactCountryFlag
-                            countryCode={countryMap[selected.value]}
+                            countryCode={COUNTRY_MAP[selected.value]}
                             svg
                             style={{
                                 fontSize: "1.2em",

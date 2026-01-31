@@ -9,6 +9,9 @@ export default function Layout() {
                 display: "flex",
                 flexDirection: "column",
                 minHeight: "100dvh", // 화면 전체 높이 확보
+                padding: 2,
+                boxSizing: "border-box",
+                width: { xs: "100%", sm: "500px" },
             }}
         >
             {/* <Navbar /> 여기에 네비바가 있다면 추가 */}
