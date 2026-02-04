@@ -1,72 +1,71 @@
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
-
-import IconButton from "@mui/material/IconButton";
+import Box from "@mui/joy/Box";
+import Stack from "@mui/joy/Stack";
+import Button from "@mui/joy/Button";
+import Typography from "@mui/joy/Typography";
+import packageJson from "../../package.json";
 import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import MainInput from "../components/MainInput";
 
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../stores/authStore";
 
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
-    const { isLoggedIn, user, logout, openModal } = useAuthStore();
+    const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
 
     return (
-        <Grid
-            container
-            direction="column"
-            spacing={3}
+        <Stack
             justifyContent="center"
             alignItems="center"
             sx={{
-                flex: 1,
+                minHeight: "80dvh",
+                width: "100%",
+                boxSizing: "border-box",
             }}
         >
-            <Box sx={{ flexGrow: 1 }} />
-            <Grid>
-                <h1>LOREM IPSUM</h1>
-            </Grid>
-            <Box sx={{ flexGrow: 1 }} />
-            <Grid>
-                <Box
-                    component="form"
-                    noValidate
-                    autoComplete="off"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        mx: "auto",
-                        width: { xs: "95vw", sm: "500px" },
-                    }}
-                >
-                    <MainInput />
-                </Box>
-            </Grid>
-            <Stack spacing={3} sx={{ mt: "50px" }}>
+            <Typography level="h1" component="h1">
+                {packageJson.description}
+            </Typography>
+
+            <Box
+                component="form"
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                    my: 8,
+                }}
+            >
+                <MainInput />
+            </Box>
+
+            <Stack spacing={3}>
                 <Button
-                    variant="contained"
-                    startIcon={<BookOutlinedIcon />}
-                    size="large"
+                    variant="solid"
+                    color="primary"
+                    startDecorator={<BookOutlinedIcon />}
+                    size="lg"
                     sx={{ flex: 1 }}
-                    onClick={!isLoggedIn ? openModal : undefined}
+                    onClick={
+                        !isLoggedIn
+                            ? () => setAuthModal("login")
+                            : () => alert(`로그인 정보: ${user}`)
+                    }
                 >
                     내 단어장 열어보기
                 </Button>
+
                 <Button
-                    variant="outlined"
-                    startIcon={<ManageSearchOutlinedIcon />}
-                    size="large"
+                    variant="soft"
+                    color="primary"
+                    startDecorator={<ManageSearchOutlinedIcon />}
+                    size="lg"
                     sx={{ flex: 1 }}
                 >
                     다른 단어장 구경하기
                 </Button>
             </Stack>
-        </Grid>
+        </Stack>
     );
 }
