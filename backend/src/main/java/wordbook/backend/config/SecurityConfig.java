@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import wordbook.backend.filter.JWTFilter;
-import wordbook.backend.filter.LoginFilter;
-import wordbook.backend.util.JWTUtil;
+import wordbook.backend.auth.filter.JWTFilter;
+import wordbook.backend.auth.filter.LoginFilter;
+import wordbook.backend.auth.util.JWTUtil;
 
 
 @Configuration

@@ -1,23 +1,28 @@
 package wordbook.backend.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import wordbook.backend.api.ApiRequestDTO;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import wordbook.backend.api.ApiResponseDTO;
-import wordbook.backend.api.ApiService;
+import wordbook.backend.api.service.ApiService;
+import wordbook.backend.api.service.OpenAiApiService;
+import wordbook.backend.domain.word.dto.WordResponseDTO;
+
+import wordbook.backend.domain.word.service.WordService;
 
 @RestController
 public class SearchController {
     private final ApiService apiService;
-    public SearchController(ApiService apiService) {
+    private final WordService wordService;
+    public SearchController(OpenAiApiService apiService, WordService wordService) {
         this.apiService = apiService;
+        this.wordService = wordService;
     }
-    @PostMapping("/search")
-    public ResponseEntity<ApiResponseDTO> search(@RequestBody ApiRequestDTO apiRequestDTO) {
-        ApiResponseDTO apiResponseDTO = apiService.callApi(apiRequestDTO);
-        return ResponseEntity.ok(apiResponseDTO);
+    @GetMapping("/search")
+    public ResponseEntity<WordResponseDTO> search(Authentication authentication, @RequestParam String word, @RequestParam String lang) {
+        String username = authentication.getName();
+        ApiResponseDTO apiResponseDTO = apiService.getResponse(word,lang);
+        WordResponseDTO wordResponseDTO = wordService.createWord(word, lang, apiResponseDTO, username);
+        return ResponseEntity.ok(wordResponseDTO);
     }
 }
