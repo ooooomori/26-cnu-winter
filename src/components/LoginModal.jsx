@@ -12,12 +12,10 @@ import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Link from "@mui/joy/Link";
 import packageJson from "../../package.json";
-import useAuthStore from "../store/useAuthStore";
-import SignUpModal from "./SignUpModal.jsx";
+import useAuthStore from "../stores/authStore.js";
 
 export default function LoginModal() {
-    const { isLoginModalOpen, closeLoginModal, openSignUpModal } =
-        useAuthStore();
+    const { isLoginModalOpen, setAuthModal, onLoginSuccess } = useAuthStore();
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
@@ -25,7 +23,7 @@ export default function LoginModal() {
     const handleClose = () => {
         setId("");
         setPassword("");
-        closeLoginModal();
+        setAuthModal(null);
     };
 
     const inputRef = useRef(null);
@@ -37,6 +35,44 @@ export default function LoginModal() {
             return () => clearTimeout(timer);
         }
     }, [isLoginModalOpen]);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        // API 요청
+        try {
+            /**
+            const res = await fetch(`${BACKEND_API_BASE_URL}/login`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json",},
+                credentials: "include",
+                body: JSON.stringify({ id, password }),
+            });
+
+            if (!res.ok) throw new Error("로그인 실패");
+
+            const data = await res.json();
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            */
+
+            const fakeResponse = {
+                accessToken: "fake-access-token-123",
+                refreshToken: "fake-refresh-token-456",
+            };
+
+            // 2. 기존에 짠 로직 그대로 실행
+            localStorage.setItem("accessToken", fakeResponse.accessToken);
+            localStorage.setItem("refreshToken", fakeResponse.refreshToken);
+  
+
+            onLoginSuccess(id);
+            alert(`${id}님, 환영합니다!`);
+            setAuthModal(null);
+        } catch (err) {
+            alert("아이디 또는 비밀번호가 틀렸습니다.");
+        }
+    };
 
     return (
         <Modal open={isLoginModalOpen} onClose={() => handleClose()}>
@@ -52,8 +88,7 @@ export default function LoginModal() {
                 </DialogContent>
                 <form
                     onSubmit={(event) => {
-                        event.preventDefault();
-                        closeLoginModal();
+                        handleLogin(event);
                     }}
                 >
                     <Stack spacing={2}>
@@ -95,7 +130,7 @@ export default function LoginModal() {
                                 level="body-sm"
                                 onClick={() => {
                                     handleClose();
-                                    openSignUpModal();
+                                    setAuthModal("signup");
                                 }}
                             >
                                 회원가입하기

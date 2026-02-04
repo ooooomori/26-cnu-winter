@@ -7,12 +7,12 @@ import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import MainInput from "../components/MainInput";
 
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../stores/authStore";
 
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
-    const { isLoggedIn, user, logout, openLoginModal } = useAuthStore();
+    const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
 
     return (
         <Stack
@@ -24,7 +24,6 @@ export default function HomePage() {
                 boxSizing: "border-box",
             }}
         >
-
             <Typography level="h1" component="h1">
                 {packageJson.description}
             </Typography>
@@ -48,7 +47,11 @@ export default function HomePage() {
                     startDecorator={<BookOutlinedIcon />}
                     size="lg"
                     sx={{ flex: 1 }}
-                    onClick={!isLoggedIn ? openLoginModal : undefined}
+                    onClick={
+                        !isLoggedIn
+                            ? () => setAuthModal("login")
+                            : () => alert(`로그인 정보: ${user}`)
+                    }
                 >
                     내 단어장 열어보기
                 </Button>
