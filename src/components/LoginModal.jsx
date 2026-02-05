@@ -41,12 +41,11 @@ export default function LoginModal() {
 
         // API 요청
         try {
-            /**
             const res = await fetch(`${BACKEND_API_BASE_URL}/login`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json",},
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ id, password }),
+                body: JSON.stringify({ username: id, password: password }),
             });
 
             if (!res.ok) throw new Error("로그인 실패");
@@ -54,8 +53,8 @@ export default function LoginModal() {
             const data = await res.json();
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
-            */
 
+            /**
             const fakeResponse = {
                 accessToken: "fake-access-token-123",
                 refreshToken: "fake-refresh-token-456",
@@ -64,7 +63,7 @@ export default function LoginModal() {
             // 2. 기존에 짠 로직 그대로 실행
             localStorage.setItem("accessToken", fakeResponse.accessToken);
             localStorage.setItem("refreshToken", fakeResponse.refreshToken);
-  
+            */
 
             onLoginSuccess(id);
             alert(`${id}님, 환영합니다!`);

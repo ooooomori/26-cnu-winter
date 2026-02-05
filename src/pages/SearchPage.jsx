@@ -28,12 +28,14 @@ export default function SearchPage() {
     const searchResult = [
         {
             word: "right",
-            phonetic: {US: "raɪt", GB: "raɪt", KR: "라잇"},
+            phonetic: { US: "raɪt", GB: "raɪt", KR: "라잇" },
             savedCount: 9921,
             meanings: [
                 {
                     partOfSpeech: "형용사",
                     definition: "옳은, 올바른",
+                    synonyms: ["correct", "true", "proper"],
+                    antonyms: ["wrong", "incorrect", "false"],
                     examples: [
                         {
                             a: "Is it ever right to kill?",
@@ -45,6 +47,8 @@ export default function SearchPage() {
                 {
                     partOfSpeech: "형용사",
                     definition: "맞는, 정확한",
+                    synonyms: ["exact", "accurate", "precise"],
+                    antonyms: ["inexact", "imprecise", "wrong"],
                     examples: [
                         {
                             a: "What’s the right time?",
@@ -56,6 +60,8 @@ export default function SearchPage() {
                 {
                     partOfSpeech: "부사",
                     definition: "정확히, 바로, 꼭",
+                    synonyms: ["exactly", "precisely", "just"],
+                    antonyms: [],
                     examples: [
                         {
                             a: "The wind was right in our faces.",
@@ -122,9 +128,7 @@ export default function SearchPage() {
                                 alignItems: "center",
                             }}
                         >
-                            <PhoneticInfo
-                                phonetic={item.phonetic}
-                            />
+                            <PhoneticInfo phonetic={item.phonetic} />
                             <Tooltip
                                 title={`${item.savedCount.toLocaleString("ko-KR")}개의 단어장에 저장되어 있어요.`}
                                 variant="outlined"
@@ -166,26 +170,45 @@ export default function SearchPage() {
                                         </Typography>
                                     </Box>
 
-                                    <Card
-                                        sx={{
-                                            mb: 2,
-                                            bgcolor: "background.level1",
-                                        }}
-                                    >
-                                        <ExampleSentence
-                                            text={meaning.examples[0].a}
-                                            keyword={
-                                                meaning.examples[0].keywords[0]
-                                            }
-                                        />
-                                        <ExampleSentence
-                                            text={meaning.examples[0].b}
-                                            keyword={
-                                                meaning.examples[0].keywords[1]
-                                            }
-                                            level="body-sm"
-                                        />
-                                    </Card>
+                                    <Box>
+                                        {/**
+                                        <Box>
+                                            <Box>
+                                                <Chip>유의어</Chip>
+                                                <Typography level="sm">{meaning.synonyms &&
+                                                    meaning.synonyms.join(",")}</Typography>
+                                            </Box>
+                                            <Box>
+                                                <Chip>반의어</Chip>
+                                                <Typography level="sm">{meaning.antonyms &&
+                                                    meaning.antonyms.join(",")}</Typography>
+                                            </Box>
+                                        </Box>
+                                        */}
+
+                                        <Card
+                                            sx={{
+                                                mb: 2,
+                                                bgcolor: "background.level1",
+                                            }}
+                                        >
+                                            <ExampleSentence
+                                                text={meaning.examples[0].a}
+                                                keyword={
+                                                    meaning.examples[0]
+                                                        .keywords[0]
+                                                }
+                                            />
+                                            <ExampleSentence
+                                                text={meaning.examples[0].b}
+                                                keyword={
+                                                    meaning.examples[0]
+                                                        .keywords[1]
+                                                }
+                                                level="body-sm"
+                                            />
+                                        </Card>
+                                    </Box>
                                 </Step>
                             ))}
                         </Stepper>

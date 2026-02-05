@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/joy";
-import Footer from "./Footer";
+import Footer from "./Footer.jsx";
 
 export default function Layout() {
     return (
