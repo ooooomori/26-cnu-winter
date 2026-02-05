@@ -1,5 +1,7 @@
 package wordbook.backend.domain.user.service;
 
+import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import wordbook.backend.domain.user.dto.UserCreateDTO;
@@ -14,11 +16,16 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    @Transactional
     public Long joinUser(UserCreateDTO userCreateDTO) {
         UserEntity userEntity= UserEntity.builder()
                 .username(userCreateDTO.getUsername())
                 .password(passwordEncoder.encode(userCreateDTO.getPassword()))
                 .build();
         return userRepository.save(userEntity).getId();
+    }
+    @Transactional
+    public UserEntity findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("user not found"));
     }
 }

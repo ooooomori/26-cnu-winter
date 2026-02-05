@@ -1,11 +1,9 @@
 package wordbook.backend.domain.word.service;
 
-
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import wordbook.backend.api.ApiResponseDTO;
 import wordbook.backend.domain.user.entity.UserEntity;
-import wordbook.backend.domain.user.repository.UserRepository;
+import wordbook.backend.domain.user.service.UserService;
 import wordbook.backend.domain.word.dto.WordResponseDTO;
 import wordbook.backend.domain.word.entity.WordEntity;
 import wordbook.backend.domain.word.repository.WordRepository;
@@ -13,13 +11,13 @@ import wordbook.backend.domain.word.repository.WordRepository;
 @Service
 public class WordService {
     private final WordRepository wordRepository;
-    private final UserRepository userRepository;
-    public WordService(WordRepository wordRepository, UserRepository userRepository) {
+    private final UserService userService;
+    public WordService(WordRepository wordRepository, UserService userService) {
         this.wordRepository = wordRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
     public WordResponseDTO createWord(String word, String lang, ApiResponseDTO apiResponseDTO, String username) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("not found user"));
+        UserEntity user = userService.findUserByUsername(username);
         WordEntity wordEntity = WordEntity.builder()
                 .user(user)
                 .antonym(apiResponseDTO.getAntonym())

@@ -19,10 +19,10 @@ public class SearchController {
         this.wordService = wordService;
     }
     @GetMapping("/search")
-    public ResponseEntity<WordResponseDTO> search(Authentication authentication, @RequestParam String word, @RequestParam String lang) {
+    public ResponseEntity<WordResponseDTO> search(Authentication authentication, @RequestParam String keyword, @RequestParam String lang) {
         String username = authentication.getName();
-        ApiResponseDTO apiResponseDTO = apiService.getResponse(word,lang);
-        WordResponseDTO wordResponseDTO = wordService.createWord(word, lang, apiResponseDTO, username);
+        ApiResponseDTO apiResponseDTO = apiService.getResponse(keyword,lang);
+        WordResponseDTO wordResponseDTO = wordService.createWord(keyword, lang, apiResponseDTO, username);
         return ResponseEntity.ok(wordResponseDTO);
     }
 }
