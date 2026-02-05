@@ -65,16 +65,15 @@ export default function SignUpModal() {
         e.preventDefault();
 
         try {
-            /**
-            const res = await fetch(`${BACKEND_API_BASE_URL}/user`, {
+            const res = await fetch(`${BACKEND_API_BASE_URL}/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
-                body: JSON.stringify({ id, password }),
+                body: JSON.stringify({ username: id, password: password }),
             });
 
             if (!res.ok) throw new Error("회원가입 실패");
-            */
+
             alert("회원가입이 완료되었어요! 로그인해주세요.");
             setAuthModal("login");
         } catch {
