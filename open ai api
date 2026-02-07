@@ -1,0 +1,98 @@
+package com.example.dictionary.service;
+
+import com.example.dictionary.dto.GeneratedWord;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
+
+/**
+ * OpenAI를 이용해 단어 정보를 생성하는 서비스
+ */
+@Service
+public class OpenAiGenerator {
+
+    @Value("${openai.api.key}")
+    private String openAiApiKey;
+
+    private static final String OPENAI_URL =
+            "https://api.openai.com/v1/chat/completions";
+
+    public GeneratedWord generate(String word, String lang) {
+
+        // 1️ 프롬프트
+        String prompt = """
+                You are a dictionary generator.
+
+                Conditions:
+                - The word is a foreign language word.
+                - The language of the word is %s.
+                - meaning must be written in Korean.
+                - example, synonym, antonym must be written in %s.
+                - Respond ONLY in JSON.
+                - No explanations.
+
+                JSON format:
+                {
+                  "meaning": "",
+                  "example": "",
+                  "synonym": "",
+                  "antonym": ""
+                }
+
+                Word: %s
+                """.formatted(lang, lang, word);
+
+        // 2️ 요청 바디
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "gpt-4o-mini");
+        requestBody.put("temperature", 0.2);
+
+        Map<String, String> message = new HashMap<>();
+        message.put("role", "user");
+        message.put("content", prompt);
+
+        requestBody.put("messages", List.of(message));
+
+        // 3️ 헤더
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(openAiApiKey);
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(requestBody, headers);
+
+        // 4️ OpenAI 호출
+        RestTemplate restTemplate = new RestTemplate();
+        Map response = restTemplate.postForObject(
+                OPENAI_URL,
+                entity,
+                Map.class
+        );
+
+        // 5 JSON 문자열 추출
+        List choices = (List) response.get("choices");
+        Map firstChoice = (Map) choices.get(0);
+        Map messageResponse = (Map) firstChoice.get("message");
+        String content = messageResponse.get("content").toString();
+
+        // 6️ JSON → DTO
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            GeneratedWord result =
+                    mapper.readValue(content, GeneratedWord.class);
+
+            // word, lang은 직접 세팅
+            result.setWord(word);
+            result.setLang(lang);
+
+            return result;
+
+        } catch (Exception e) {
+            throw new RuntimeException("OpenAI 응답 파싱 실패", e);
+        }
+    }
+}

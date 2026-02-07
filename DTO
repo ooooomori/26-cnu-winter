@@ -1,0 +1,62 @@
+package com.example.dictionary.dto;
+
+/**
+ * OpenAI가 생성한 결과를 담는 DTO
+ */
+public class GeneratedWord {
+
+    private String word;      // 외국어 단어
+    private String lang;      // 단어 언어
+    private String meaning;   // 한국어 뜻
+    private String example;   // 예문 (lang)
+    private String synonym;   // 유의어 (lang)
+    private String antonym;   // 반의어 (lang)
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
+    }
+
+    public String getExample() {
+        return example;
+    }
+
+    public void setExample(String example) {
+        this.example = example;
+    }
+
+    public String getSynonym() {
+        return synonym;
+    }
+
+    public void setSynonym(String synonym) {
+        this.synonym = synonym;
+    }
+
+    public String getAntonym() {
+        return antonym;
+    }
+
+    public void setAntonym(String antonym) {
+        this.antonym = antonym;
+    }
+}

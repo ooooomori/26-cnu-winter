@@ -1,0 +1,43 @@
+# 한국어기초사전 Open API 조사 및 연동 정리
+
+## 1. API 개요
+한국어기초사전 Open API는 한국어 및 외국어 단어를 검색하여
+뜻, 예문, 품사, 활용형 등의 정보를 제공하는 외부 Open API이다.
+
+본 프로젝트에서는 프론트엔드에서 직접 외부 API를 호출하지 않고,
+Spring 서버에서 한국어기초사전 API를 대신 호출하여
+응답을 전달하는 중계(Proxy) 구조로 사용한다.
+
+---
+
+## 2. 사용 목적
+- 한국어 / 외국어 단어 검색
+- 단어의 뜻(definition) 및 예문(example) 제공
+- 활용형(conjugation) 정보 확인
+
+---
+
+## 3. API 호출 방식
+
+### 3-1. search API (단어 검색)
+- Method: GET
+- Endpoint:
+  https://krdict.korean.go.kr/api/search
+
+- 주요 파라미터
+  - key: 발급받은 Open API Key
+  - q: 검색할 단어 (한국어 또는 외국어)
+  - req_type: xml
+
+- 응답 형식: XML
+
+- 응답 예시 구조
+```xml
+<item>
+  <target_code>123456</target_code>
+  <word>사랑</word>
+  <sense>
+    <definition>어떤 사람이나 대상을 몹시 아끼고 귀중히 여기는 마음</definition>
+    <example>부모의 사랑</example>
+  </sense>
+</item>
