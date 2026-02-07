@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/joy";
-import Footer from "./Footer.jsx";
+import Footer from "./Footer";
+import LoginModal from "./LoginModal.jsx";
+import SignUpModal from "./SignUpModal.jsx";
 
 export default function Layout() {
     return (
@@ -14,12 +16,11 @@ export default function Layout() {
                 width: { xs: "100%", sm: "500px" },
             }}
         >
-            {/* <Navbar /> 여기에 네비바가 있다면 추가 */}
-
             <Box component="main" sx={{ flexGrow: 1 }}>
+            <LoginModal />
+            <SignUpModal />
                 <Outlet /> {/* 각 페이지가 렌더링되는 지점 */}
             </Box>
-
             <Footer />
         </Box>
     );
