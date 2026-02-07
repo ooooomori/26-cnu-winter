@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Button from "@mui/joy/Button";
@@ -12,8 +14,18 @@ import useAuthStore from "../stores/authStore";
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
-    const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
+    const { isLoggedIn, user, logout, setAuthModal, setRedirectTo } = useAuthStore();
+    const navigate = useNavigate();
 
+    const handleVocaClick = () => {
+        if (!isLoggedIn) {
+            setRedirectTo("/wordbook");
+            setAuthModal("login");
+            return;
+        } else {
+            navigate("/wordbook");
+        }
+    }
     return (
         <Stack
             justifyContent="center"
@@ -48,9 +60,7 @@ export default function HomePage() {
                     size="lg"
                     sx={{ flex: 1 }}
                     onClick={
-                        !isLoggedIn
-                            ? () => setAuthModal("login")
-                            : () => alert(`로그인 정보: ${user}`)
+                        () => handleVocaClick()
                     }
                 >
                     내 단어장 열어보기

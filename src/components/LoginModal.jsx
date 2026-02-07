@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
@@ -13,10 +14,17 @@ import Typography from "@mui/joy/Typography";
 import Link from "@mui/joy/Link";
 import packageJson from "../../package.json";
 import useAuthStore from "../stores/authStore.js";
+import API from "../api/axios";
 
 export default function LoginModal() {
-    const { isLoginModalOpen, setAuthModal, onLoginSuccess } = useAuthStore();
-
+    const {
+        isLoginModalOpen,
+        setAuthModal,
+        onLoginSuccess,
+        redirectTo,
+        setRedirectTo,
+    } = useAuthStore();
+    const navigate = useNavigate();
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const isEmpty = id.length < 1 || password.length < 1;
@@ -24,7 +32,7 @@ export default function LoginModal() {
         setId("");
         setPassword("");
         setAuthModal(null);
-    };
+    }; // 모달 종료 시 입력된 아이디 및 패스워드 초기화, 모달 닫기
 
     const inputRef = useRef(null);
     useEffect(() => {
@@ -34,42 +42,44 @@ export default function LoginModal() {
             }, 50);
             return () => clearTimeout(timer);
         }
-    }, [isLoginModalOpen]);
+    }, [isLoginModalOpen]); // 로그인 모달 오픈 시 50ms 후 아이디 입력창에 포커스 줌
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        // API 요청
+        const {
+            setTokens,
+            onLoginSuccess,
+            setRedirectTo,
+            setAuthModal,
+            redirectTo,
+        } = useAuthStore.getState();
+
         try {
-            const res = await fetch(`${BACKEND_API_BASE_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username: id, password: password }),
+            
+            const res = await API.post("/login", {
+                username: id,
+                password: password,
             });
+            const { accessToken, refreshToken } = res.data;
 
-            if (!res.ok) throw new Error("로그인 실패");
-
-            const data = await res.json();
-            localStorage.setItem("accessToken", data.accessToken);
-            localStorage.setItem("refreshToken", data.refreshToken);
-
-            /**
-            const fakeResponse = {
-                accessToken: "fake-access-token-123",
-                refreshToken: "fake-refresh-token-456",
+            /** 프론트 테스트용 코드
+            const res = {
+                accessToken: "accessToken123",
+                refreshToken: "refreshToken123"
             };
-
-            // 2. 기존에 짠 로직 그대로 실행
-            localStorage.setItem("accessToken", fakeResponse.accessToken);
-            localStorage.setItem("refreshToken", fakeResponse.refreshToken);
+            const { accessToken, refreshToken } = res;
             */
 
+            setTokens(accessToken, refreshToken); //Zustand 이용 토큰 저장
             onLoginSuccess(id);
             alert(`${id}님, 환영합니다!`);
+            navigate(redirectTo || "/");
+            setRedirectTo(null);
             setAuthModal(null);
         } catch (err) {
             alert("아이디 또는 비밀번호가 틀렸습니다.");
+            console.error("로그인 에러:", err);
         }
     };
 

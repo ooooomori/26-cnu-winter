@@ -5,6 +5,7 @@ import MainInput from "../components/MainInput.jsx";
 import ExampleSentence from "../components/ExampleSentence.jsx";
 import AddToVocaButton from "../components/AddToVocaButton.jsx";
 import PhoneticInfo from "../components/PhoneticInfo.jsx";
+import RelatedWords from "../components/RelatedWords.jsx";
 
 import Chip from "@mui/joy/Chip";
 import Box from "@mui/joy/Box";
@@ -162,8 +163,8 @@ export default function SearchPage() {
                                             alignItems: "center",
                                         }}
                                     >
-                                        <Chip color="warning" variant="soft">
-                                            {meaning.partOfSpeech}
+                                        <Chip color="primary" variant="soft">
+                                            <b>{meaning.partOfSpeech}</b>
                                         </Chip>
                                         <Typography>
                                             {meaning.definition}
@@ -171,24 +172,14 @@ export default function SearchPage() {
                                     </Box>
 
                                     <Box>
-                                        {/**
-                                        <Box>
-                                            <Box>
-                                                <Chip>유의어</Chip>
-                                                <Typography level="sm">{meaning.synonyms &&
-                                                    meaning.synonyms.join(",")}</Typography>
-                                            </Box>
-                                            <Box>
-                                                <Chip>반의어</Chip>
-                                                <Typography level="sm">{meaning.antonyms &&
-                                                    meaning.antonyms.join(",")}</Typography>
-                                            </Box>
-                                        </Box>
-                                        */}
+                                        <RelatedWords
+                                            synonyms={meaning.synonyms}
+                                            antonyms={meaning.antonyms}
+                                        />  
 
                                         <Card
                                             sx={{
-                                                mb: 2,
+                                                marginY: 2,
                                                 bgcolor: "background.level1",
                                             }}
                                         >
@@ -211,6 +202,7 @@ export default function SearchPage() {
                                     </Box>
                                 </Step>
                             ))}
+                            <Step sx={{opacity: 0}} disabled />
                         </Stepper>
                     </CardContent>
                 </Card>

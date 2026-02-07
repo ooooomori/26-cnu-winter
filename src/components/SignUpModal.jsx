@@ -16,6 +16,7 @@ import Typography from "@mui/joy/Typography";
 import Link from "@mui/joy/Link";
 import packageJson from "../../package.json";
 import useAuthStore from "../stores/authStore.js";
+import API from "../api/axios";
 
 export default function SignUpModal() {
     const { isSignUpModalOpen, setAuthModal } = useAuthStore();
@@ -23,7 +24,8 @@ export default function SignUpModal() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
-    const [isIdAvailable, setIsIdAvailable] = useState(null); // TODO: 실제 아이디 중복 확인 로직으로 교체
+    const [isIdAvailable, setIsIdAvailable] = useState(null);
+
     const handleClose = () => {
         setId("");
         setIsIdAvailable(null);
@@ -40,40 +42,30 @@ export default function SignUpModal() {
             }, 50);
             return () => clearTimeout(timer);
         }
-    }, [isSignUpModalOpen]);
+    }, [isSignUpModalOpen]); //회원가입 모달 오픈 시 아이디 입력창에 포커스
 
-    const checkIdAvailable = () => {
-        setIsIdAvailable((prev) => !prev); // 이건 임시고 아래가 진짜 ID 중복 확인 로직
-        /**
-            try {
-                const res = await fetch(`${BACKEND_API_BASE_URL}/user/exist`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ id }),
-                });
+    const checkIdAvailable = async () => {
+        // setIsIdAvailable((prev) => !prev); // 임시 ID 중복 확인 로직
 
-                const exists = await res.json();
-                setIsIdValid(!exists);
-            } catch {
-                alert("아이디 중복 확인 중 오류가 발생했어요.");
-            }
-         */
+        try {
+            const res = await API.post("/user/exist", {
+                username: id,
+            });
+            const exists = await res.data(); // true or false
+            setIsIdAvailable(!exists);
+        } catch {
+            alert("아이디 중복 확인 중 오류가 발생했어요.");
+        }
     };
 
     const handleSignUp = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch(`${BACKEND_API_BASE_URL}/signup`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username: id, password: password }),
+            await API.post("/signup", {
+                username: id,
+                password: password,
             });
-
-            if (!res.ok) throw new Error("회원가입 실패");
-
             alert("회원가입이 완료되었어요! 로그인해주세요.");
             setAuthModal("login");
         } catch {
