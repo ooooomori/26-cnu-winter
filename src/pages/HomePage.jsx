@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
+import Link from "@mui/joy/Link";
 import Button from "@mui/joy/Button";
 import Typography from "@mui/joy/Typography";
 import packageJson from "../../package.json";
@@ -14,7 +15,8 @@ import useAuthStore from "../stores/authStore";
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
-    const { isLoggedIn, user, logout, setAuthModal, setRedirectTo } = useAuthStore();
+    const { isLoggedIn, user, logout, setAuthModal, setRedirectTo } =
+        useAuthStore();
     const navigate = useNavigate();
 
     const handleVocaClick = () => {
@@ -25,7 +27,7 @@ export default function HomePage() {
         } else {
             navigate("/wordbook");
         }
-    }
+    };
     return (
         <Stack
             justifyContent="center"
@@ -52,16 +54,14 @@ export default function HomePage() {
                 <MainInput />
             </Box>
 
-            <Stack spacing={3}>
+            <Stack spacing={3} sx={{alignItems: "center"}}>
                 <Button
                     variant="solid"
                     color="primary"
                     startDecorator={<BookOutlinedIcon />}
                     size="lg"
                     sx={{ flex: 1 }}
-                    onClick={
-                        () => handleVocaClick()
-                    }
+                    onClick={() => handleVocaClick()}
                 >
                     내 단어장 열어보기
                 </Button>
@@ -75,6 +75,12 @@ export default function HomePage() {
                 >
                     다른 단어장 구경하기
                 </Button>
+
+                {isLoggedIn && (
+                    <Link onClick={() => logout()}>
+                        로그아웃
+                    </Link>
+                )}
             </Stack>
         </Stack>
     );

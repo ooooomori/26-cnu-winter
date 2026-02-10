@@ -53,8 +53,9 @@ export default function SignUpModal() {
             });
             const exists = await res.data(); // true or false
             setIsIdAvailable(!exists);
-        } catch {
+        } catch(err) {
             alert("아이디 중복 확인 중 오류가 발생했어요.");
+            console.error("아이디 중복 확인 에러:", err);
         }
     };
 
@@ -68,8 +69,9 @@ export default function SignUpModal() {
             });
             alert("회원가입이 완료되었어요! 로그인해주세요.");
             setAuthModal("login");
-        } catch {
+        } catch (err) {
             alert("회원가입 중 오류가 발생했어요.");
+            console.error("회원가입 에러:", err);
         }
     };
 
