@@ -51,7 +51,7 @@ export default function SignUpModal() {
             const res = await API.post("/user/exist", {
                 username: id,
             });
-            const exists = await res.data(); // true or false
+            const exists = await res.data; // true or false
             setIsIdAvailable(!exists);
         } catch(err) {
             alert("아이디 중복 확인 중 오류가 발생했어요.");
@@ -63,7 +63,7 @@ export default function SignUpModal() {
         e.preventDefault();
 
         try {
-            await API.post("/signup", {
+            await API.post("/user", {
                 username: id,
                 password: password,
             });
