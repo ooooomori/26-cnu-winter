@@ -53,7 +53,7 @@ export default function SignUpModal() {
             });
             const exists = await res.data; // true or false
             setIsIdAvailable(!exists);
-        } catch(err) {
+        } catch (err) {
             alert("아이디 중복 확인 중 오류가 발생했어요.");
             console.error("아이디 중복 확인 에러:", err);
         }
