@@ -1,88 +1,73 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import MainInput from "../components/MainInput.jsx";
 import ExampleSentence from "../components/ExampleSentence.jsx";
 import AddToVocaButton from "../components/AddToVocaButton.jsx";
-import PhoneticInfo from "../components/PhoneticInfo.jsx";
 import RelatedWords from "../components/RelatedWords.jsx";
+import API from "../api/axios";
 
-import Chip from "@mui/joy/Chip";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import { Typography } from "@mui/joy";
 import Stepper from "@mui/joy/Stepper";
 import Step from "@mui/joy/Step";
-import StepIndicator from "@mui/joy/StepIndicator";
 import Divider from "@mui/joy/Divider";
-import Tooltip from "@mui/joy/Tooltip";
 import IconButton from "@mui/joy/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
-import BookmarksOutlined from "@mui/icons-material/BookmarksOutlined";
+import CircularProgress from "@mui/joy/CircularProgress";
 
 export default function SearchPage() {
     const [searchParams] = useSearchParams();
-    const searchedLang = searchParams.get("lang");
+    const queryKeyword = searchParams.get("keyword") || ""; // 쿼리 중 keyword (검색 단어)
+    const queryLang = searchParams.get("lang") || "en"; // 쿼리 중 lang (검색 언어)
     const navigate = useNavigate();
+    const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
 
-    const searchResult = [
-        {
-            word: "right",
-            phonetic: { US: "raɪt", GB: "raɪt", KR: "라잇" },
-            savedCount: 9921,
-            meanings: [
-                {
-                    partOfSpeech: "형용사",
-                    definition: "옳은, 올바른",
-                    synonyms: ["correct", "true", "proper"],
-                    antonyms: ["wrong", "incorrect", "false"],
-                    examples: [
-                        {
-                            a: "Is it ever right to kill?",
-                            b: "사람을 죽이는 것이 과연 옳은 일인가?",
-                            keywords: ["right", "옳은"],
-                        },
-                    ],
-                },
-                {
-                    partOfSpeech: "형용사",
-                    definition: "맞는, 정확한",
-                    synonyms: ["exact", "accurate", "precise"],
-                    antonyms: ["inexact", "imprecise", "wrong"],
-                    examples: [
-                        {
-                            a: "What’s the right time?",
-                            b: "지금이 정확하게 몇 시지?",
-                            keywords: ["right", "정확하게"],
-                        },
-                    ],
-                },
-                {
-                    partOfSpeech: "부사",
-                    definition: "정확히, 바로, 꼭",
-                    synonyms: ["exactly", "precisely", "just"],
-                    antonyms: [],
-                    examples: [
-                        {
-                            a: "The wind was right in our faces.",
-                            b: "바람이 정확히 우리 얼굴을 향해 불어왔다.",
-                            keywords: ["right", "정확히"],
-                        },
-                    ],
-                },
-            ],
-        },
-    ]; // 임시 데이터
+    /** const searchResult = {
+        word: "defeat",
+        meaning: "1. 패배시키다 2. 무산시키다 3. 패배 4. 타도",
+        example: "He defeated the champion in three sets.",
+        synonym: "beat",
+        antonym: "triumph, victory",
+    }; // 데이터 형식 */
+
+    useEffect(() => {
+        const fetchResult = async () => {
+            try {
+                const res = await API.get("/search", {
+                    params: {
+                        keyword: queryKeyword,
+                        lang: queryLang,
+                    },
+                });
+                setSearchResult(res.data);
+            } catch (err) {
+                alert("단어 검색 중 오류가 발생했습니다");
+                console.error("단어 검색 실패:", err);
+            }
+        };
+        fetchResult();
+    }, [queryKeyword, queryLang]);
 
     return (
-        <Box sx={{ minHeight: "80dvh" }}>
+        <Box
+            sx={{
+                minHeight: "80dvh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+            }}
+        >
             <Box
                 sx={{
                     display: "flex",
                     alignItems: "center",
                     gap: 1,
                     border: "none",
+                    width: "100%",
                 }}
             >
                 <IconButton
@@ -98,7 +83,7 @@ export default function SearchPage() {
                 </IconButton>
                 <MainInput />
             </Box>
-            {searchResult.map((item) => (
+            {searchResult && searchResult.word ? (
                 <Card variant="plain" sx={{ mt: 4, textAlign: "left" }}>
                     <CardContent>
                         <Box
@@ -117,96 +102,62 @@ export default function SearchPage() {
                                     flex: 1,
                                 }}
                             >
-                                {item.word}
+                                {searchResult.word}
                             </Typography>
                             <AddToVocaButton />
                         </Box>
-
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <PhoneticInfo phonetic={item.phonetic} />
-                            <Tooltip
-                                title={`${item.savedCount.toLocaleString("ko-KR")}개의 단어장에 저장되어 있어요.`}
-                                variant="outlined"
-                                enterTouchDelay={0}
-                            >
-                                <Typography
-                                    startDecorator={
-                                        <BookmarksOutlined
-                                            sx={{ fontSize: "md" }}
-                                        />
-                                    }
-                                >
-                                    {item.savedCount.toLocaleString("ko-KR")}
-                                </Typography>
-                            </Tooltip>
-                        </Box>
                         <Divider sx={{ my: 2 }} />
                         <Stepper orientation="vertical">
-                            {item.meanings.map((meaning, index) => (
-                                <Step
-                                    indicator={
-                                        <StepIndicator variant="solid">
-                                            {index + 1}
-                                        </StepIndicator>
-                                    }
+                            <Step>
+                                <Typography level="title-md">뜻</Typography>
+
+                                <Typography sx={{ mb: 2 }}>
+                                    {searchResult.meaning}
+                                </Typography>
+                            </Step>
+                            <Step>
+                                <Typography level="title-md">
+                                    연관 단어
+                                </Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <RelatedWords
+                                        synonym={searchResult.synonym}
+                                        antonym={searchResult.antonym}
+                                    />
+                                </Box>
+                            </Step>
+                            <Step>
+                                <Typography level="title-md">
+                                    활용하기
+                                </Typography>
+                                <Card
+                                    sx={{
+                                        marginY: 2,
+                                        bgcolor: "background.level1",
+                                    }}
                                 >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            gap: 1,
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Chip color="primary" variant="soft">
-                                            <b>{meaning.partOfSpeech}</b>
-                                        </Chip>
-                                        <Typography>
-                                            {meaning.definition}
-                                        </Typography>
-                                    </Box>
-
-                                    <Box>
-                                        <RelatedWords
-                                            synonyms={meaning.synonyms}
-                                            antonyms={meaning.antonyms}
-                                        />  
-
-                                        <Card
-                                            sx={{
-                                                marginY: 2,
-                                                bgcolor: "background.level1",
-                                            }}
-                                        >
-                                            <ExampleSentence
-                                                text={meaning.examples[0].a}
-                                                keyword={
-                                                    meaning.examples[0]
-                                                        .keywords[0]
-                                                }
-                                            />
-                                            <ExampleSentence
-                                                text={meaning.examples[0].b}
-                                                keyword={
-                                                    meaning.examples[0]
-                                                        .keywords[1]
-                                                }
-                                                level="body-sm"
-                                            />
-                                        </Card>
-                                    </Box>
-                                </Step>
-                            ))}
-                            <Step sx={{opacity: 0}} disabled />
+                                    <ExampleSentence
+                                        text={searchResult.example}
+                                        keyword={searchResult.word}
+                                    />
+                                </Card>
+                            </Step>
+                            <Step sx={{ opacity: 0 }} disabled />
                         </Stepper>
                     </CardContent>
                 </Card>
-            ))}
+            ) : (
+                <Box
+                    sx={{
+                        flex: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <CircularProgress />
+                </Box>
+            )}
         </Box>
     );
 }
