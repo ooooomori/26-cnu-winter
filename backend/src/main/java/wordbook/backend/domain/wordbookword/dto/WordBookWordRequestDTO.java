@@ -1,4 +1,4 @@
-package wordbook.backend.domain.wordbook.dto;
+package wordbook.backend.domain.wordbookword.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WordBookResponseDTO {
-    private Long id;
-    private String name;
-    private Long count;
+public class WordBookWordRequestDTO {
+    private Long word;
+    private Long wordbook;
 }

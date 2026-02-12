@@ -1,11 +1,19 @@
 package wordbook.backend.domain.wordbookword.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wordbook.backend.domain.word.entity.WordEntity;
 import wordbook.backend.domain.wordbook.entity.WordBookEntity;
 
 @Entity
 @Table(name="wordbook_word")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WordBookWordEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,10 +22,10 @@ public class WordBookWordEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wordbook_id", nullable = false)
-    private WordBookEntity wordBook;
+    private WordBookEntity wordBookEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "word_id", nullable = false)
-    private WordEntity word;
+    private WordEntity wordEntity;
 
 }

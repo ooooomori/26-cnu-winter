@@ -24,21 +24,20 @@ public class WordBookService {
     @Transactional(readOnly = true)
     public List<WordBookResponseDTO> findMyAll(String username) {
         UserEntity user= userService.findUserByUsername(username);
-        return wordBookRepository.findByUserEntity(user).stream()
-                .map(wordBook->WordBookResponseDTO.builder()
-                        .name(wordBook.getName())
-                        .id(wordBook.getId())
-                        .build()).toList();
+        return wordBookRepository.findWordBooksWithWordCount(user);
 
     }
     @Transactional
-    public boolean createWordBook(WordBookRequestDTO wordBookRequestDTO,String username) {
+    public WordBookResponseDTO save(WordBookRequestDTO wordBookRequestDTO,String username) {
         UserEntity user = userService.findUserByUsername(username);
         WordBookEntity wordBook= WordBookEntity.builder()
                 .userEntity(user)
                 .name(wordBookRequestDTO.getName())
                 .build();
-        wordBookRepository.save(wordBook);
-        return true;
+        WordBookEntity save = wordBookRepository.save(wordBook);
+        return WordBookResponseDTO.builder()
+                .id(save.getId())
+                .name(wordBookRequestDTO.getName())
+                .build();
     }
 }
