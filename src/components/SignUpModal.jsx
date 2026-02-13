@@ -222,7 +222,10 @@ export default function SignUpModal() {
                                     underline="hover"
                                     level="body-xs"
                                     component="button"
-                                    onClick={(e) => {e.preventDefault(); setPolicy("termsOfService")}}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPolicy("termsOfService");
+                                    }}
                                 >
                                     이용약관
                                 </Link>{" "}
@@ -231,7 +234,10 @@ export default function SignUpModal() {
                                     underline="hover"
                                     level="body-xs"
                                     component="button"
-                                    onClick={(e) => {e.preventDefault(); setPolicy("privacyPolicy")}}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPolicy("privacyPolicy");
+                                    }}
                                 >
                                     개인정보처리방침
                                 </Link>

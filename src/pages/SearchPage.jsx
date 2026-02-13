@@ -23,8 +23,9 @@ export default function SearchPage() {
     const queryKeyword = searchParams.get("keyword") || ""; // 쿼리 중 keyword (검색 단어)
     const queryLang = searchParams.get("lang") || "en"; // 쿼리 중 lang (검색 언어)
     const navigate = useNavigate();
-    //const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
+    const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
 
+    /**
     const searchResult = {
         wordId: 1234,
         word: "defeat",
@@ -33,8 +34,8 @@ export default function SearchPage() {
         synonym: "beat",
         antonym: "triumph, victory",
     }; // 데이터 형식
+    */
 
-    /*
     useEffect(() => {
         const fetchResult = async () => {
             try {
@@ -52,7 +53,6 @@ export default function SearchPage() {
         };
         fetchResult();
     }, [queryKeyword, queryLang]);
-    */
 
     return (
         <Box
