@@ -1,3 +1,7 @@
+/**
+ * 회원가입용 모달 컴포넌트
+ */
+
 import { useState, useEffect, useRef } from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
@@ -17,14 +21,16 @@ import Link from "@mui/joy/Link";
 import packageJson from "../../package.json";
 import useAuthStore from "../stores/authStore.js";
 import API from "../api/axios";
+import PolicyModal from "./PolicyModal.jsx";
 
 export default function SignUpModal() {
     const { isSignUpModalOpen, setAuthModal } = useAuthStore();
 
-    const [id, setId] = useState("");
-    const [password, setPassword] = useState("");
-    const [password2, setPassword2] = useState("");
-    const [isIdAvailable, setIsIdAvailable] = useState(null);
+    const [id, setId] = useState(""); // 아이디
+    const [password, setPassword] = useState(""); // 비밀번호
+    const [password2, setPassword2] = useState(""); // 비밀번호 확인 칸의 비밀번호
+    const [isIdAvailable, setIsIdAvailable] = useState(null); // 아이디 이용가능(=미중복) 여부
+    const [policy, setPolicy] = useState(null); // 이용약관, 개인정보 처리방침 모달 표시 상태 (null: 모달 미표시, "termsOfService": 이용약관 모달 표시, "privacyPolicy": 개인정보 처리방침 묘달 표시)
 
     const handleClose = () => {
         setId("");
@@ -215,7 +221,11 @@ export default function SignUpModal() {
                                 <Link
                                     underline="hover"
                                     level="body-xs"
-                                    href="#"
+                                    component="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPolicy("termsOfService");
+                                    }}
                                 >
                                     이용약관
                                 </Link>{" "}
@@ -223,7 +233,11 @@ export default function SignUpModal() {
                                 <Link
                                     underline="hover"
                                     level="body-xs"
-                                    href="#"
+                                    component="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPolicy("privacyPolicy");
+                                    }}
                                 >
                                     개인정보처리방침
                                 </Link>
@@ -231,6 +245,12 @@ export default function SignUpModal() {
                             </Typography>
                         </Stack>
                     </form>
+                    {policy !== null && (
+                        <PolicyModal
+                            type={policy}
+                            onClose={() => setPolicy(null)}
+                        />
+                    )}
                 </ModalDialog>
             </ModalOverflow>
         </Modal>

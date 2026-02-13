@@ -2,7 +2,7 @@
     "name": "26-cnu-winter",
     "private": true,
     "version": "0.0.0",
-    "description": "두바이쫀득쿠키",
+    "description": "VOCAMASTER",
     "type": "module",
     "scripts": {
         "dev": "vite --host",

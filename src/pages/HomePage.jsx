@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/joy/Box";
@@ -11,23 +12,22 @@ import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import MainInput from "../components/MainInput";
 
 import useAuthStore from "../stores/authStore";
+import useVocaStore from "../stores/VocaStore";
 
 const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
-    const { isLoggedIn, user, logout, setAuthModal, setRedirectTo } =
-        useAuthStore();
-    const navigate = useNavigate();
+    const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
+    const { openMyVocaList } = useVocaStore();
 
     const handleVocaClick = () => {
         if (!isLoggedIn) {
-            setRedirectTo("/wordbook");
             setAuthModal("login");
-            return;
         } else {
-            navigate("/wordbook");
+            openMyVocaList(null, "open");
         }
     };
+
     return (
         <Stack
             justifyContent="center"
@@ -54,7 +54,7 @@ export default function HomePage() {
                 <MainInput />
             </Box>
 
-            <Stack spacing={3} sx={{alignItems: "center"}}>
+            <Stack spacing={3} sx={{ alignItems: "center" }}>
                 <Button
                     variant="solid"
                     color="primary"
@@ -76,11 +76,7 @@ export default function HomePage() {
                     다른 단어장 구경하기
                 </Button>
 
-                {isLoggedIn && (
-                    <Link onClick={() => logout()}>
-                        로그아웃
-                    </Link>
-                )}
+                {isLoggedIn && <Link onClick={() => logout()}>로그아웃</Link>}
             </Stack>
         </Stack>
     );

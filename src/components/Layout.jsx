@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/joy";
-import Footer from "./Footer";
+import Footer from "./Footer.jsx";
 import LoginModal from "./LoginModal.jsx";
 import SignUpModal from "./SignUpModal.jsx";
+import MyVocaListModal from "./MyVocaListModal.jsx";
 
 export default function Layout() {
     return (
@@ -19,6 +20,7 @@ export default function Layout() {
             <Box component="main" sx={{ flexGrow: 1 }}>
             <LoginModal />
             <SignUpModal />
+            <MyVocaListModal />
                 <Outlet /> {/* 각 페이지가 렌더링되는 지점 */}
             </Box>
             <Footer />

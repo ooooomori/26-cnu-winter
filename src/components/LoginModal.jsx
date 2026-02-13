@@ -21,8 +21,6 @@ export default function LoginModal() {
         isLoginModalOpen,
         setAuthModal,
         onLoginSuccess,
-        redirectTo,
-        setRedirectTo,
     } = useAuthStore();
     const navigate = useNavigate();
     const [id, setId] = useState("");
@@ -50,9 +48,7 @@ export default function LoginModal() {
         const {
             setTokens,
             onLoginSuccess,
-            setRedirectTo,
             setAuthModal,
-            redirectTo,
         } = useAuthStore.getState();
 
         try {
@@ -74,8 +70,6 @@ export default function LoginModal() {
             setTokens(accessToken, refreshToken); //Zustand 이용 토큰 저장
             onLoginSuccess(id);
             alert(`${id}님, 환영합니다!`);
-            navigate(redirectTo || "/");
-            setRedirectTo(null);
             setAuthModal(null);
         } catch (err) {
             alert("아이디 또는 비밀번호가 틀렸습니다.");

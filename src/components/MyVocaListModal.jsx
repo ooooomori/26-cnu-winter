@@ -1,7 +1,8 @@
-const BACKEND_API_BASE_URL = import.meta.env.VITE_BACKEND_API_BASE_URL;
-
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+
+import AddNewVocaButton from "./AddNewVocaButton.jsx";
+
 import {
     Button,
     IconButton,
@@ -20,19 +21,14 @@ import {
     Chip,
 } from "@mui/joy";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import HomeIcon from "@mui/icons-material/Home";
-import DeleteIcon from "@mui/icons-material/Delete";
-import packageJson from "../../package.json";
-import useAuthStore from "../stores/authStore.js";
+import useVocaStore from "../stores/VocaStore.js";
 
-export default function MyVocaListModal({ open, setOpen }) {
-    const navigate = useNavigate();
-    const handleClose = () => {
-        setOpen(false);
-        navigate("/");
-    };
+export default function MyVocaListModal() {
+    const { isMyVocaListOpen, closeMyVocaList, mode } = useVocaStore();
+
     const [vocaList, setVocaList] = useState([]);
 
+    /**
     const VocaList = [
         { id: "abcde", name: "나만의단어장1121", count: 121 },
         { id: "fghji", name: "영어단어장", count: 15 },
@@ -45,23 +41,23 @@ export default function MyVocaListModal({ open, setOpen }) {
         { id: "abcde", name: "나만의단어장1121", count: 121 },
         { id: "fghji", name: "영어단어장", count: 15 },
     ]; // 내 단어장 목록 (임시 데이터)
-
-    useEffect(() => {
-        const fetchVocaList = async () => {
+    */
+    const fetchVocaList = async () => {
             try {
-                //const res = await API.get("/wordbook/list");
-                //setVocaList(res.data);
+                const res = await API.get("/wordbook/list");
+                setVocaList(res.data);
             } catch {
                 alert("단어장 목록을 불러오지 못했어요.");
             }
-        };
+    };
+    useEffect(() => {    
         fetchVocaList();
     }, []);
 
     return (
         <Modal
-            open={open}
-            onClose={() => handleClose()}
+            open={isMyVocaListOpen}
+            onClose={closeMyVocaList}
             sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -78,7 +74,8 @@ export default function MyVocaListModal({ open, setOpen }) {
                 <DialogTitle>
                     <Typography>내 단어장 목록</Typography>
                 </DialogTitle>
-                {VocaList.length === 0 && (
+
+                {vocaList.length === 0 && (
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -88,6 +85,7 @@ export default function MyVocaListModal({ open, setOpen }) {
                             alignItems: "center",
                         }}
                     >
+                        <AddNewVocaButton />
                         <Box>
                             <AddCommentIcon
                                 sx={{ fontSize: 30, color: "secondary" }}
@@ -95,27 +93,20 @@ export default function MyVocaListModal({ open, setOpen }) {
                             <Typography level="body-md" color="neutral">
                                 아직 만든 단어장이 없어요!
                                 <br />
-                                단어를 검색하고 내 단어장에 추가해보세요.
+                                단어장을 만들고 단어를 검색해 추가해보세요.
                             </Typography>
                         </Box>
-                        <Button
-                            variant="outlined"
-                            startDecorator={<HomeIcon />}
-                            onClick={() => navigate("/")}
-                            size="lg"
-                        >
-                            메인으로
-                        </Button>
                     </Box>
                 )}
-                {VocaList.length !== 0 && (
+                {vocaList.length !== 0 && (
                     <Box
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
                             gap: 2,
-                            overflowY: "scroll"
+                            overflowY: "scroll",
+                            marginY: 2,
                         }}
                     >
                         {VocaList.map((e, i) => (
@@ -145,7 +136,10 @@ export default function MyVocaListModal({ open, setOpen }) {
                                         variant="soft"
                                         color="primary"
                                         size="sm"
-                                        sx={{ pointerEvents: "none", mt: 1 }}
+                                        sx={{
+                                            pointerEvents: "none",
+                                            mt: 1,
+                                        }}
                                     >
                                         수록 단어: {e.count}개
                                     </Chip>
@@ -164,10 +158,11 @@ export default function MyVocaListModal({ open, setOpen }) {
                                         borderColor: "divider",
                                     }}
                                 >
-                                    열기
+                                    {mode === "add" ? "선택" : "열기"}
                                 </CardOverflow>
                             </Card>
                         ))}
+                        <AddNewVocaButton onRefresh={fetchVocaList} />
                     </Box>
                 )}
             </ModalDialog>
