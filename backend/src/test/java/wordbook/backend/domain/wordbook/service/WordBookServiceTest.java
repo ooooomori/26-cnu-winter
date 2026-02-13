@@ -24,8 +24,8 @@ class WordBookServiceTest {
         String wordBookName="korean1";
         WordBookRequestDTO wordBookRequestDTO=new WordBookRequestDTO(wordBookName);
         //
-        boolean b = wordBookService.createWordBook(wordBookRequestDTO, username);
-        assertTrue(b);
+         wordBookService.save(wordBookRequestDTO, username);
+
     }
     @Test
     public void getWordBook() {
@@ -38,4 +38,6 @@ class WordBookServiceTest {
         }
 
     }
+
+
 }

@@ -21,7 +21,7 @@ public class WordEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private UserEntity userEntity;
 
     @Column(name = "word", nullable = false)
     private String word;

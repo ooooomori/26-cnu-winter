@@ -5,6 +5,7 @@ import MainInput from "../components/MainInput.jsx";
 import ExampleSentence from "../components/ExampleSentence.jsx";
 import AddToVocaButton from "../components/AddToVocaButton.jsx";
 import RelatedWords from "../components/RelatedWords.jsx";
+import API from "../api/axios";
 
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";

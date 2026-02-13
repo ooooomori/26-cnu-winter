@@ -36,13 +36,13 @@ class WordServiceTest {
         //given
         String word = "test";
         String lang = "en";
-        ApiResponseDTO apiResponseDTO=new ApiResponseDTO("1","2","3","4");
+
         WordResponseDTO wordResponseDTO=new WordResponseDTO("test","en","1","2","3","4");
         String username = "admin";
 
 
         //then
-        WordResponseDTO word1 = wordService.createWord(word, lang, apiResponseDTO, username);
+        WordResponseDTO word1 = wordService.createWord(wordResponseDTO,username);
         assertThat(word1).isEqualTo(wordResponseDTO);
     }
 }
