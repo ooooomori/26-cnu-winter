@@ -5,7 +5,6 @@ import MainInput from "../components/MainInput.jsx";
 import ExampleSentence from "../components/ExampleSentence.jsx";
 import AddToVocaButton from "../components/AddToVocaButton.jsx";
 import RelatedWords from "../components/RelatedWords.jsx";
-import API from "../api/axios";
 
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -17,22 +16,25 @@ import Divider from "@mui/joy/Divider";
 import IconButton from "@mui/joy/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
 import CircularProgress from "@mui/joy/CircularProgress";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 
 export default function SearchPage() {
     const [searchParams] = useSearchParams();
     const queryKeyword = searchParams.get("keyword") || ""; // 쿼리 중 keyword (검색 단어)
     const queryLang = searchParams.get("lang") || "en"; // 쿼리 중 lang (검색 언어)
     const navigate = useNavigate();
-    const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
+    //const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
 
-    /** const searchResult = {
+    const searchResult = {
+        wordId: 1234,
         word: "defeat",
-        meaning: "1. 패배시키다 2. 무산시키다 3. 패배 4. 타도",
+        meaning: "패배시키다, 패배",
         example: "He defeated the champion in three sets.",
         synonym: "beat",
         antonym: "triumph, victory",
-    }; // 데이터 형식 */
+    }; // 데이터 형식
 
+    /*
     useEffect(() => {
         const fetchResult = async () => {
             try {
@@ -50,6 +52,7 @@ export default function SearchPage() {
         };
         fetchResult();
     }, [queryKeyword, queryLang]);
+    */
 
     return (
         <Box
@@ -83,7 +86,9 @@ export default function SearchPage() {
                 </IconButton>
                 <MainInput />
             </Box>
-            {searchResult && searchResult.word ? (
+            {searchResult &&
+            searchResult.word &&
+            searchResult.meaning !== "" ? (
                 <Card variant="plain" sx={{ mt: 4, textAlign: "left" }}>
                     <CardContent>
                         <Box
@@ -104,7 +109,7 @@ export default function SearchPage() {
                             >
                                 {searchResult.word}
                             </Typography>
-                            <AddToVocaButton />
+                            <AddToVocaButton word={searchResult.wordId} />
                         </Box>
                         <Divider sx={{ my: 2 }} />
                         <Stepper orientation="vertical">
@@ -146,6 +151,26 @@ export default function SearchPage() {
                         </Stepper>
                     </CardContent>
                 </Card>
+            ) : searchResult && searchResult.word ? (
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-evenly",
+                        alignItems: "center",
+                    }}
+                ><Box>
+                    <SentimentDissatisfiedIcon
+                        sx={{ fontSize: 30, color: "secondary" }}
+                    />
+                    <Typography level="body-md" color="neutral">
+                        검색 결과가 없어요.
+                        <br />
+                        단어를 맞게 입력했는지 확인해보세요.
+                    </Typography>
+                    </Box>
+                </Box>
             ) : (
                 <Box
                     sx={{

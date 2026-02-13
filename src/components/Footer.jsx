@@ -1,13 +1,19 @@
+import * as React from "react";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Link from "@mui/joy/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import packageJson from "../../package.json";
+import PolicyModal from "./PolicyModal";
 
 export default function Footer() {
+    const [policy, setPolicy] = React.useState(null);
     return (
         <Box component="footer" sx={{ pt: 5 }}>
+            {policy !== null && (
+                <PolicyModal type={policy} onClose={() => setPolicy(null)} />
+            )}
             <Stack
                 direction="row"
                 justifyContent="center"
@@ -41,7 +47,8 @@ export default function Footer() {
                     underline="hover"
                     color="neutral"
                     level="body-xs"
-                    href="#"
+                    component="button"
+                    onClick={() => setPolicy("termsOfService")}
                 >
                     이용약관
                 </Link>
@@ -49,7 +56,8 @@ export default function Footer() {
                     underline="hover"
                     color="neutral"
                     level="body-xs"
-                    href="#"
+                    component="button"
+                    onClick={() => setPolicy("privacyPolicy")}
                 >
                     개인정보처리방침
                 </Link>

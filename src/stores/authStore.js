@@ -8,7 +8,7 @@ const useAuthStore = create(
             user: null, //유저 ID (초기값: null)
             isLoginModalOpen: false, //로그인 모달 열림 상태 변수 (초기값: false)
             isSignUpModalOpen: false, //회원가입 모달 열림 상태 변수 (초기값: false)
-            redirectTo: null, //로그인 후 이동할 경로 저장 변수 (초기값: null)
+
             accessToken: null, //로그인 토큰
             refreshToken: null,
 
@@ -16,8 +16,6 @@ const useAuthStore = create(
             setTokens: (accessToken, refreshToken) =>
                 set({ accessToken, refreshToken }),
 
-            //목적지 설정 함수
-            setRedirectTo: (path) => set({ redirectTo: path }),
 
             setAuthModal: (type) =>
                 set({
