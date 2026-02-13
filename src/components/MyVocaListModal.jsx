@@ -26,9 +26,9 @@ import useVocaStore from "../stores/VocaStore.js";
 export default function MyVocaListModal() {
     const { isMyVocaListOpen, closeMyVocaList, mode } = useVocaStore();
 
-    const navigate = useNavigate()
     const [vocaList, setVocaList] = useState([]);
 
+    /**
     const VocaList = [
         { id: "abcde", name: "나만의단어장1121", count: 121 },
         { id: "fghji", name: "영어단어장", count: 15 },
@@ -41,10 +41,11 @@ export default function MyVocaListModal() {
         { id: "abcde", name: "나만의단어장1121", count: 121 },
         { id: "fghji", name: "영어단어장", count: 15 },
     ]; // 내 단어장 목록 (임시 데이터)
+    */
     const fetchVocaList = async () => {
             try {
-                //const res = await API.get("/wordbook/list");
-                //setVocaList(res.data);
+                const res = await API.get("/wordbook/list");
+                setVocaList(res.data);
             } catch {
                 alert("단어장 목록을 불러오지 못했어요.");
             }
@@ -74,7 +75,7 @@ export default function MyVocaListModal() {
                     <Typography>내 단어장 목록</Typography>
                 </DialogTitle>
 
-                {VocaList.length === 0 && (
+                {vocaList.length === 0 && (
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -97,7 +98,7 @@ export default function MyVocaListModal() {
                         </Box>
                     </Box>
                 )}
-                {VocaList.length !== 0 && (
+                {vocaList.length !== 0 && (
                     <Box
                         sx={{
                             display: "flex",
