@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import API from "../api/axios";
 import {
     Button,
     Typography,
@@ -112,7 +112,7 @@ export default function AddNewVocaButton({ onRefresh }) {
     const [open, setOpen] = React.useState(false);
     const [addResult, setAddResult] = React.useState(null); // null: 기본값, true: 단어장 생성 성공, false: 단어장 생성 실패
 
-    React.useState(() => {
+    React.useEffect(() => {
         if (addResult) {
             onRefresh();
         }
@@ -120,8 +120,10 @@ export default function AddNewVocaButton({ onRefresh }) {
 
     return (
         <>
-            <Button startDecorator={<AddIcon />} onClick={() => setOpen(true)}>
-                새 단어장 생성
+            <Button variant="soft" size="lg" startDecorator={<AddIcon />} onClick={() => setOpen(true)} sx={{position: "fixed", bottom: "30px", right: "30px", borderRadius: "20px", boxShadow: "md", zIndex: 999}}>
+            <Typography level="body-md">
+                새 단어장
+            </Typography>
             </Button>
             <AddNewVocaModal
                 open={open}

@@ -1,3 +1,20 @@
+/**
+ * @name LoginModal
+ * @description 
+ * 서비스 전역에서 사용되는 로그인 인터페이스 모달 컴포넌트
+ * 로그인 성공 시 토큰 저장
+ * 회원가입 인터페이스 바로가기 링크 제공
+ * * @logic
+ * - State Management: `useAuthStore`를 통해 모달 노출 여부와 토큰(JWT)을 관리합니다.
+ * - UX Detail: 모달이 열리면 `useRef`와 `useEffect`를 사용하여 아이디 입력창에 자동 포커스를 줍니다.
+ * - Security: 로그인 성공 시 `setTokens`를 통해 Access/Refresh 토큰을 Zustand 스토어에 저장합니다.
+ * - Navigation: 계정이 없는 사용자를 위해 '회원가입하기' 버튼을 제공하며, 클릭 시 회원가입 모달로 전환합니다.
+ * * @requires
+ * - useAuthStore: 인증 관련 전역 상태 및 액션
+ * - API: Axios 인스턴스로 서버와 통신 (`/login`)
+ * - packageJson: 모달 타이틀에 서비스명 표출
+ */
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";

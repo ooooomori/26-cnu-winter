@@ -1,22 +1,19 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import AddNewVocaButton from "./AddNewVocaButton.jsx";
 
 import {
-    Button,
-    IconButton,
+    Link,
     Modal,
     ModalDialog,
     ModalClose,
-    ModalOverflow,
     DialogTitle,
     Typography,
     Stack,
     Box,
     Card,
     CardContent,
-    CardActions,
     CardOverflow,
     Chip,
 } from "@mui/joy";
@@ -25,34 +22,24 @@ import useVocaStore from "../stores/VocaStore.js";
 
 export default function MyVocaListModal() {
     const { isMyVocaListOpen, closeMyVocaList, mode } = useVocaStore();
-
     const [vocaList, setVocaList] = useState([]);
 
-    /**
-    const VocaList = [
-        { id: "abcde", name: "나만의단어장1121", count: 121 },
-        { id: "fghji", name: "영어단어장", count: 15 },
-        { id: "abcde", name: "나만의단어장1121331", count: 121 },
-        { id: "fghji", name: "영어단어장", count: 15 },
-        { id: "abcde", name: "나만의단어장1121", count: 121 },
-        { id: "fghji", name: "영어단어장", count: 15 },
-        { id: "abcde", name: "나만의단어장1121", count: 121 },
-        { id: "fghji", name: "영어단어장", count: 15 },
-        { id: "abcde", name: "나만의단어장1121", count: 121 },
-        { id: "fghji", name: "영어단어장", count: 15 },
-    ]; // 내 단어장 목록 (임시 데이터)
-    */
     const fetchVocaList = async () => {
-            try {
-                const res = await API.get("/wordbook/list");
-                setVocaList(res.data);
-            } catch {
-                alert("단어장 목록을 불러오지 못했어요.");
-            }
+        try {
+            const res = await API.get("/wordbook/list");
+            //const res = { data: [], };
+            setVocaList(res.data);
+        } catch {
+            alert("단어장 목록을 불러오지 못했어요.");
+            closeMyVocaList();
+        }
     };
-    useEffect(() => {    
-        fetchVocaList();
-    }, []);
+    useEffect(() => {
+        if (isMyVocaListOpen) {
+            setVocaList([]);
+            fetchVocaList();
+        }
+    }, [isMyVocaListOpen]);
 
     return (
         <Modal
@@ -85,20 +72,20 @@ export default function MyVocaListModal() {
                             alignItems: "center",
                         }}
                     >
-                        <AddNewVocaButton />
-                        <Box>
+                        <Box sx={{ mb: "30px" }}>
                             <AddCommentIcon
                                 sx={{ fontSize: 30, color: "secondary" }}
                             />
                             <Typography level="body-md" color="neutral">
-                                아직 만든 단어장이 없어요!
+                                아직 만든 단어장이 없어요.
                                 <br />
-                                단어장을 만들고 단어를 검색해 추가해보세요.
+                                단어장을 만들고 단어를 추가해보아요!
                             </Typography>
                         </Box>
+                        <AddNewVocaButton onRefresh={fetchVocaList} />
                     </Box>
                 )}
-                {vocaList.length !== 0 && (
+                {vocaList.length > 0 && (
                     <Box
                         sx={{
                             display: "flex",
@@ -109,10 +96,10 @@ export default function MyVocaListModal() {
                             marginY: 2,
                         }}
                     >
-                        {VocaList.map((e, i) => (
+                        {vocaList.map((e, i) => (
                             <Card
                                 key={i}
-                                color="primary"
+                                color="neutral"
                                 sx={{
                                     width: "200px",
                                     "&:hover": {
@@ -125,30 +112,50 @@ export default function MyVocaListModal() {
                             >
                                 <CardContent
                                     sx={{
-                                        alignItems: "center",
-                                        textAlign: "center",
+                                        textAlign: "left",
                                     }}
                                 >
                                     <Typography level="title-lg" component="h2">
-                                        {e.name}
+                                        <Link
+                                            overlay
+                                            component={RouterLink}
+                                            to={`/wordbook?id=${e.id}`}
+                                        >
+                                            {e.name}
+                                        </Link>
                                     </Typography>
-                                    <Chip
-                                        variant="soft"
-                                        color="primary"
-                                        size="sm"
-                                        sx={{
-                                            pointerEvents: "none",
-                                            mt: 1,
-                                        }}
+                                    <Stack
+                                        direction="row"
+                                        spacing={1}
+                                        sx={{ mt: 0.5 }}
                                     >
-                                        수록 단어: {e.count}개
-                                    </Chip>
+                                        <Chip
+                                            variant="outlined"
+                                            color="success"
+                                            size="sm"
+                                            sx={{
+                                                pointerEvents: "none",
+                                            }}
+                                        >
+                                            공개
+                                        </Chip>
+                                        <Chip
+                                            variant="soft"
+                                            color="neutral"
+                                            size="sm"
+                                            sx={{
+                                                pointerEvents: "none",
+                                            }}
+                                        >
+                                            수록 단어 {e.count}개
+                                        </Chip>
+                                    </Stack>
                                 </CardContent>
                                 <CardOverflow
                                     variant="soft"
-                                    color="primary"
+                                    color="neutral"
                                     sx={{
-                                        px: 2,
+                                        px: 1,
                                         justifyContent: "center",
                                         alignItems: "center",
                                         fontSize: "xs",

@@ -1,3 +1,11 @@
+/**
+ * @name ExampleSentence
+ * @description 단어 검색 결과에서, 예문을 출력하는 컴포넌트
+ * @param {string} text - 예문 텍스트
+ * @param {string} keyword - 검색 결과 단어
+ * @example <ExampleSentence text={searchResult.example} keyword={searchResult.word} />
+ */
+
 import Typography from "@mui/joy/Typography";
 
 export default function ExampleSentence({ text, keyword }) {

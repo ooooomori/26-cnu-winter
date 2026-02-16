@@ -37,6 +37,7 @@ export default function SearchPage() {
     }; // 데이터 형식
     */
 
+    
     useEffect(() => {
         const fetchResult = async () => {
             try {

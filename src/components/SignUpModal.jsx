@@ -1,5 +1,19 @@
 /**
- * 회원가입용 모달 컴포넌트
+ * @name SignUpModal
+ * @description 
+ * 신규 사용자를 위한 회원가입 모달 컴포넌트
+ * 아이디 중복 확인, 비밀번호 유효성 및 확인 검사 로직, 약관 확인 링크 등
+ * * @logic
+ * - Validation: 
+ * 1. 아이디: 5~15자, 영문/숫자/_ 조합 (`isIdValid`)
+ * 2. 비밀번호: 8자 이상 (`isPasswordValid`)
+ * 3. 비밀번호 확인: 일치 여부 검토 (`isPasswordMatch`)
+ * - Duplicate Check: `/user/exist` API를 호출하여 아이디 중복 여부 확인
+ * - UX: 모달 오픈 시 50ms 후 아이디 필드 자동 포커싱 및 유효성 상태에 따른 HelperText 가이드 제공
+ * - Policy: `PolicyModal`을 중첩 호출하여 이용약관 및 개인정보처리방침 출력
+ * * @requires
+ * - useAuthStore: 모달 상태 확인 및 제어
+ * - API: Axios 인스턴스로 서버와 통신: 회원가입(`POST /user`) 및 중복 확인(`POST /user/exist`)
  */
 
 import { useState, useEffect, useRef } from "react";

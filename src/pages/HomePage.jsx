@@ -1,6 +1,3 @@
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
-
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Link from "@mui/joy/Link";
@@ -13,8 +10,6 @@ import MainInput from "../components/MainInput";
 
 import useAuthStore from "../stores/authStore";
 import useVocaStore from "../stores/VocaStore";
-
-const ariaLabel = { "aria-label": "description" };
 
 export default function HomePage() {
     const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
@@ -67,6 +62,7 @@ export default function HomePage() {
                 </Button>
 
                 <Button
+                    disabled
                     variant="soft"
                     color="primary"
                     startDecorator={<ManageSearchOutlinedIcon />}

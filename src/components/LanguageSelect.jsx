@@ -1,3 +1,13 @@
+/**
+ * @name LanguageSelect
+ * @description 검색 Input 좌측에 있는 Select 컴포넌트로, 검색 언어를 선택할 수 있음
+ * * @param {string} lang - 검색 언어 (부모 요소인 <MainInput>에서 State로 관리)
+ * @param {() => void} onChange - 언어 선택 시 실행될 핸들러
+ * * @example
+ * <LanguageSelect lang={lang} onChange={handleLangChange} />
+ */
+
+
 import Select, { selectClasses } from "@mui/joy/Select";
 
 import { COUNTRY_MAP } from "../constants/languages";

@@ -1,3 +1,13 @@
+/**
+ * @name Layout
+ * @description 
+ * 애플리케이션의 공통 레이아웃을 정의하는 루트 컴포넌트
+ * 전체 화면의 중앙 정렬과 모바일 대응, 모달 및 푸터 출력
+ * * @layout_info
+ * - Width: 모바일(xs)에서는 100%, 태블릿 이상(sm)에서는 500px 고정
+ * - Height: 100dvh를 사용하여 동적 뷰포트 높이 확보
+ */
+
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/joy";
 import Footer from "./Footer.jsx";
@@ -11,7 +21,7 @@ export default function Layout() {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                minHeight: "100dvh", // 화면 전체 높이 확보
+                minHeight: "100dvh",
                 padding: 2,
                 boxSizing: "border-box",
                 width: { xs: "100%", sm: "500px" },
@@ -21,7 +31,7 @@ export default function Layout() {
             <LoginModal />
             <SignUpModal />
             <MyVocaListModal />
-                <Outlet /> {/* 각 페이지가 렌더링되는 지점 */}
+                <Outlet />
             </Box>
             <Footer />
         </Box>
