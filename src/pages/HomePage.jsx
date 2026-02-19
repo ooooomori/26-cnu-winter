@@ -10,6 +10,7 @@ import MainInput from "../components/MainInput";
 
 import useAuthStore from "../stores/authStore";
 import useVocaStore from "../stores/VocaStore";
+import API from "../api/axios";
 
 export default function HomePage() {
     const { isLoggedIn, user, logout, setAuthModal } = useAuthStore();
@@ -20,6 +21,23 @@ export default function HomePage() {
             setAuthModal("login");
         } else {
             openMyVocaList(null, "open");
+        }
+    };
+
+    const handleRemove = async () => {
+        if (
+            window.confirm(
+                "정말 탈퇴하시겠습니까? 탈퇴 시 회원 정보가 모두 삭제되며 복구 불가능합니다.",
+            )
+        ) {
+            try {
+                await API.get("/user/remove");
+                alert("회원 탈퇴되었습니다.");
+                logout();
+            } catch (err) {
+                alert("회원 탈퇴 시도 중 문제가 생겼습니다.");
+                console.error("회원 탈퇴 오류:", err);
+            }
         }
     };
 
@@ -73,6 +91,9 @@ export default function HomePage() {
                 </Button>
 
                 {isLoggedIn && <Link onClick={() => logout()}>로그아웃</Link>}
+                {isLoggedIn && (
+                    <Link onClick={() => handleRemove()}>회원 탈퇴</Link>
+                )}
             </Stack>
         </Stack>
     );

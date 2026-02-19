@@ -21,7 +21,8 @@ import AddCommentIcon from "@mui/icons-material/AddComment";
 import useVocaStore from "../stores/VocaStore.js";
 
 export default function MyVocaListModal() {
-    const { isMyVocaListOpen, closeMyVocaList, mode } = useVocaStore();
+    const { isMyVocaListOpen, closeMyVocaList, mode, selectedWord } =
+        useVocaStore();
     const [vocaList, setVocaList] = useState([]);
 
     const fetchVocaList = async () => {
@@ -29,8 +30,9 @@ export default function MyVocaListModal() {
             const res = await API.get("/wordbook/list");
             //const res = { data: [], };
             setVocaList(res.data);
-        } catch {
+        } catch (err) {
             alert("단어장 목록을 불러오지 못했어요.");
+            console.error("단어장 목록 로드 실패: " + err);
             closeMyVocaList();
         }
     };
@@ -40,6 +42,18 @@ export default function MyVocaListModal() {
             fetchVocaList();
         }
     }, [isMyVocaListOpen]);
+    const handleAdd = async (id) => {
+        try {
+            const res = await API.post("/wordbookword", {
+                word: selectedWord,
+                wordbook: id,
+            });
+            alert("단어가 등록되었어요!");
+        } catch (err) {
+            alert("단어를 추가하다 실패했어요.");
+            console.error("단어 등록 실패:", err);
+        }
+    };
 
     return (
         <Modal
@@ -118,8 +132,21 @@ export default function MyVocaListModal() {
                                     <Typography level="title-lg" component="h2">
                                         <Link
                                             overlay
-                                            component={RouterLink}
-                                            to={`/wordbook?id=${e.id}`}
+                                            component={
+                                                mode === "add"
+                                                    ? "button"
+                                                    : RouterLink
+                                            }
+                                            to={
+                                                mode === "add"
+                                                    ? undefined
+                                                    : `/wordbook?id=${e.id}`
+                                            }
+                                            onClick={
+                                                mode === "add"
+                                                    ? () => handleAdd(e.id)
+                                                    : undefined
+                                            }
                                         >
                                             {e.name}
                                         </Link>

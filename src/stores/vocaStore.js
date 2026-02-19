@@ -6,8 +6,8 @@ import { create } from "zustand";
 const useVocaStore = create((set) => ({
     isMyVocaListOpen: false, //모달 열림 상태(기본값 F)
     selectedWord: null, //단어장에 저장할 단어
-    mode: null, //단어장에 단어 추가: (추가할 단어 ID, "add"), 단어장 열기: (null, "open")
-    openMyVocaList: (word, mode) =>
+    mode: null, //add or open
+    openMyVocaList: (word, mode) => //단어장에 단어 추가: (추가할 단어 ID, "add"), 단어장 열기: (null, "open")
         set({ isMyVocaListOpen: true, selectedWord: word, mode: mode, }),
     closeMyVocaList: () => set({ isMyVocaListOpen: false, selectedWord: null, mode: null, }),
 }));
