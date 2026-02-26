@@ -19,6 +19,7 @@ import {
 } from "@mui/joy";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import useVocaStore from "../stores/VocaStore.js";
+import API from "../api/axios";
 
 export default function MyVocaListModal() {
     const { isMyVocaListOpen, closeMyVocaList, mode, selectedWord } =

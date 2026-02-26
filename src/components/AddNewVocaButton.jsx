@@ -51,6 +51,14 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
         }
     };
 
+    const handleCloseSnackbar = (event, reason) => {
+        // 외부 클릭 또는 모달 종료 시 Snackbar 사라짐 방지
+        if (reason === "clickaway") {
+            return;
+        }
+        setAddResult(null);
+    };
+
     return (
         <Modal open={open} onClose={onClose}>
             <ModalDialog>
@@ -120,10 +128,21 @@ export default function AddNewVocaButton({ onRefresh }) {
 
     return (
         <>
-            <Button variant="soft" size="lg" startDecorator={<AddIcon />} onClick={() => setOpen(true)} sx={{position: "fixed", bottom: "30px", right: "30px", borderRadius: "20px", boxShadow: "md", zIndex: 999}}>
-            <Typography level="body-md">
-                새 단어장
-            </Typography>
+            <Button
+                variant="soft"
+                size="lg"
+                startDecorator={<AddIcon />}
+                onClick={() => setOpen(true)}
+                sx={{
+                    position: "fixed",
+                    bottom: "30px",
+                    right: "30px",
+                    borderRadius: "20px",
+                    boxShadow: "md",
+                    zIndex: 999,
+                }}
+            >
+                <Typography level="body-md">새 단어장</Typography>
             </Button>
             <AddNewVocaModal
                 open={open}
@@ -136,9 +155,7 @@ export default function AddNewVocaButton({ onRefresh }) {
                 open={addResult}
                 color="success"
                 autoHideDuration={3000}
-                onClose={() => {
-                    setAddResult(null);
-                }}
+                onClose={handleCloseSnackbar}
             >
                 새 단어장이 생성되었어요!
             </Snackbar>
@@ -148,9 +165,7 @@ export default function AddNewVocaButton({ onRefresh }) {
                 open={addResult === false}
                 color="danger"
                 autoHideDuration={3000}
-                onClose={() => {
-                    setAddResult(null);
-                }}
+                onClose={handleCloseSnackbar}
             >
                 새 단어장을 생성하는 데 문제가 생겼어요.
             </Snackbar>
