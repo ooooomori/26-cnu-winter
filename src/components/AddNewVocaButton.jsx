@@ -51,14 +51,6 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
         }
     };
 
-    const handleCloseSnackbar = (event, reason) => {
-        // 외부 클릭 또는 모달 종료 시 Snackbar 사라짐 방지
-        if (reason === "clickaway") {
-            return;
-        }
-        setAddResult(null);
-    };
-
     return (
         <Modal open={open} onClose={onClose}>
             <ModalDialog>
@@ -125,6 +117,14 @@ export default function AddNewVocaButton({ onRefresh }) {
             onRefresh();
         }
     }, [addResult]); // 단어장 생성 성공시 onRefresh(=fetchVocaList()) 실행
+
+    const handleCloseSnackbar = (event, reason) => {
+        // 외부 클릭 또는 모달 종료 시 Snackbar 사라짐 방지
+        if (reason === "clickaway") {
+            return;
+        }
+        setAddResult(null);
+    };
 
     return (
         <>
