@@ -1,6 +1,6 @@
 /**
  * @name Layout
- * @description 
+ * @description
  * 애플리케이션의 공통 레이아웃을 정의하는 루트 컴포넌트
  * 전체 화면의 중앙 정렬과 모바일 대응, 모달 및 푸터 출력
  * * @layout_info
@@ -14,6 +14,7 @@ import Footer from "./Footer.jsx";
 import LoginModal from "./LoginModal.jsx";
 import SignUpModal from "./SignUpModal.jsx";
 import MyVocaListModal from "./MyVocaListModal.jsx";
+import AlertSnackbar from "./AlertSnackbar.jsx";
 
 export default function Layout() {
     return (
@@ -28,9 +29,10 @@ export default function Layout() {
             }}
         >
             <Box component="main" sx={{ flexGrow: 1 }}>
-            <LoginModal />
-            <SignUpModal />
-            <MyVocaListModal />
+                <LoginModal />
+                <SignUpModal />
+                <MyVocaListModal />
+                <AlertSnackbar />
                 <Outlet />
             </Box>
             <Footer />

@@ -12,18 +12,17 @@ import {
     Input,
     Switch,
     Stack,
-    Snackbar,
 } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import useAlertStore from "../stores/alertStore";
 
-function AddNewVocaModal({ open, onClose, setAddResult }) {
-    // 새 단어장 생성 시 단어장 제목 및 공개 여부를 물어보는 모달.
-    const [checked, setChecked] = React.useState(true); // 단어장 공개 여부 스위치 상태
+function AddNewVocaModal({ open, onClose, onRefresh }) {
+    const [checked, setChecked] = React.useState(true);
     const [title, setTitle] = React.useState("");
-
     const inputRef = React.useRef(null);
+
+    const { showSuccess, showFail } = useAlertStore();
+
     React.useEffect(() => {
         if (open) {
             const timer = setTimeout(() => {
@@ -31,22 +30,22 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
             }, 50);
             return () => clearTimeout(timer);
         }
-    }, [open]); // 모달 오픈 시 50ms 후 제목 입력창에 포커스 줌
+    }, [open]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await API.post("/wordbook", {
+            await API.post("/wordbook", {
                 name: title,
             });
 
+            showSuccess("새 단어장이 생성되었어요!");
             setTitle("");
-            setAddResult(true);
+            onRefresh();
             onClose();
         } catch (err) {
-            setTitle("");
-            setAddResult(false);
+            showFail("새 단어장을 생성하는 데 문제가 생겼어요.");
             console.error("단어장 추가 에러:", err);
         }
     };
@@ -58,16 +57,11 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
                 <DialogTitle>
                     <Typography>새 단어장 생성</Typography>
                 </DialogTitle>
-                <form
-                    onSubmit={(event) => {
-                        handleSubmit(event);
-                    }}
-                >
+                <form onSubmit={handleSubmit}>
                     <Stack spacing={3}>
                         <FormControl>
                             <FormLabel>제목</FormLabel>
                             <Input
-                                autoFocus
                                 placeholder="단어장 제목을 입력하세요"
                                 slotProps={{ input: { ref: inputRef } }}
                                 required
@@ -90,13 +84,6 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
                                 color={checked ? "primary" : "neutral"}
                                 variant={checked ? "solid" : "outlined"}
                                 endDecorator={checked ? "공개" : "비공개"}
-                                slotProps={{
-                                    endDecorator: {
-                                        sx: {
-                                            minWidth: 24,
-                                        },
-                                    },
-                                }}
                             />
                         </FormControl>
                         <Button type="submit" disabled={!title.length}>
@@ -108,23 +95,9 @@ function AddNewVocaModal({ open, onClose, setAddResult }) {
         </Modal>
     );
 }
+
 export default function AddNewVocaButton({ onRefresh }) {
     const [open, setOpen] = React.useState(false);
-    const [addResult, setAddResult] = React.useState(null); // null: 기본값, true: 단어장 생성 성공, false: 단어장 생성 실패
-
-    React.useEffect(() => {
-        if (addResult) {
-            onRefresh();
-        }
-    }, [addResult]); // 단어장 생성 성공시 onRefresh(=fetchVocaList()) 실행
-
-    const handleCloseSnackbar = (event, reason) => {
-        // 외부 클릭 또는 모달 종료 시 Snackbar 사라짐 방지
-        if (reason === "clickaway") {
-            return;
-        }
-        setAddResult(null);
-    };
 
     return (
         <>
@@ -144,31 +117,12 @@ export default function AddNewVocaButton({ onRefresh }) {
             >
                 <Typography level="body-md">새 단어장</Typography>
             </Button>
+
             <AddNewVocaModal
                 open={open}
                 onClose={() => setOpen(false)}
-                setAddResult={setAddResult}
+                onRefresh={onRefresh}
             />
-            <Snackbar
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                startDecorator={<CheckCircleOutlineIcon />}
-                open={addResult}
-                color="success"
-                autoHideDuration={3000}
-                onClose={handleCloseSnackbar}
-            >
-                새 단어장이 생성되었어요!
-            </Snackbar>
-            <Snackbar
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                startDecorator={<ErrorOutlineIcon />}
-                open={addResult === false}
-                color="danger"
-                autoHideDuration={3000}
-                onClose={handleCloseSnackbar}
-            >
-                새 단어장을 생성하는 데 문제가 생겼어요.
-            </Snackbar>
         </>
     );
 }

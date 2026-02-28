@@ -2,7 +2,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import AddNewVocaButton from "./AddNewVocaButton.jsx";
-
+// AlertSnackbar 임포트 제거 (전역 스토어 사용)
 import {
     Link,
     Modal,
@@ -18,7 +18,8 @@ import {
     Chip,
 } from "@mui/joy";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import useVocaStore from "../stores/VocaStore.js";
+import useVocaStore from "../stores/vocaStore.js";
+import useAlertStore from "../stores/alertStore";
 import API from "../api/axios";
 
 export default function MyVocaListModal() {
@@ -26,33 +27,38 @@ export default function MyVocaListModal() {
         useVocaStore();
     const [vocaList, setVocaList] = useState([]);
 
+    const { showSuccess, showFail } = useAlertStore();
+
     const fetchVocaList = async () => {
         try {
             const res = await API.get("/wordbook/list");
-            //const res = { data: [], };
             setVocaList(res.data);
         } catch (err) {
-            alert("단어장 목록을 불러오지 못했어요.");
+            showFail("단어장 목록을 불러오지 못했어요.");
             console.error("단어장 목록 로드 실패: " + err);
             closeMyVocaList();
         }
     };
+
     useEffect(() => {
         if (isMyVocaListOpen) {
             setVocaList([]);
             fetchVocaList();
         }
     }, [isMyVocaListOpen]);
+
     const handleAdd = async (id) => {
         try {
-            const res = await API.post("/wordbookword", {
+            await API.post("/wordbookword", {
                 word: selectedWord,
                 wordbook: id,
             });
-            alert("단어가 등록되었어요!");
+
+            showSuccess("단어가 등록되었어요!");
+            fetchVocaList();
         } catch (err) {
-            alert("단어를 추가하다 실패했어요.");
             console.error("단어 등록 실패:", err);
+            showFail("단어를 등록하는 데 문제가 생겼어요.");
         }
     };
 
@@ -146,7 +152,7 @@ export default function MyVocaListModal() {
                                             onClick={
                                                 mode === "add"
                                                     ? () => handleAdd(e.id)
-                                                    : undefined
+                                                    : () => closeMyVocaList()
                                             }
                                         >
                                             {e.name}

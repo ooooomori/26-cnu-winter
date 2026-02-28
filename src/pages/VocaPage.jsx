@@ -74,7 +74,7 @@ export default function VocaPage() {
         if (window.confirm(`정말 단어 ${word}(을)를 삭제하시겠습니까?`)) {
             try {
                 await API.delete("/wordbookword", {
-                    data: {
+                    params: {
                         wordBookId: queryId,
                         wordId: wordId,
                     },

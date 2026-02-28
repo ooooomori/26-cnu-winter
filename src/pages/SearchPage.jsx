@@ -25,6 +25,7 @@ export default function SearchPage() {
     const queryLang = searchParams.get("lang") || "en"; // 쿼리 중 lang (검색 언어)
     const navigate = useNavigate();
     const [searchResult, setSearchResult] = useState({}); // 검색 결과 객체 저장
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
     /**
     const searchResult = {
@@ -37,9 +38,11 @@ export default function SearchPage() {
     }; // 데이터 형식
     */
 
-    
     useEffect(() => {
         const fetchResult = async () => {
+            if (!queryKeyword) return; // 검색어가 없으면 실행하지 않음
+
+            setIsLoading(true); // 로딩 시작
             try {
                 const res = await API.get("/search", {
                     params: {
@@ -51,6 +54,8 @@ export default function SearchPage() {
             } catch (err) {
                 alert("단어 검색 중 오류가 발생했습니다");
                 console.error("단어 검색 실패:", err);
+            } finally {
+                setIsLoading(false); // 로딩 종료
             }
         };
         fetchResult();
@@ -88,9 +93,21 @@ export default function SearchPage() {
                 </IconButton>
                 <MainInput />
             </Box>
-            {searchResult &&
-            searchResult.word &&
-            searchResult.meaning !== "" ? (
+
+            {isLoading ? (
+                <Box
+                    sx={{
+                        flex: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <CircularProgress />
+                </Box>
+            ) : searchResult &&
+              searchResult.word &&
+              searchResult.meaning !== "" ? (
                 <Card variant="plain" sx={{ mt: 4, textAlign: "left" }}>
                     <CardContent>
                         <Box
@@ -117,7 +134,6 @@ export default function SearchPage() {
                         <Stepper orientation="vertical">
                             <Step>
                                 <Typography level="title-md">뜻</Typography>
-
                                 <Typography sx={{ mb: 2 }}>
                                     {searchResult.meaning}
                                 </Typography>
@@ -162,15 +178,16 @@ export default function SearchPage() {
                         justifyContent: "space-evenly",
                         alignItems: "center",
                     }}
-                ><Box>
-                    <SentimentDissatisfiedIcon
-                        sx={{ fontSize: 30, color: "secondary" }}
-                    />
-                    <Typography level="body-md" color="neutral">
-                        검색 결과가 없어요.
-                        <br />
-                        단어를 맞게 입력했는지 확인해보세요.
-                    </Typography>
+                >
+                    <Box>
+                        <SentimentDissatisfiedIcon
+                            sx={{ fontSize: 30, color: "secondary" }}
+                        />
+                        <Typography level="body-md" color="neutral">
+                            검색 결과가 없어요.
+                            <br />
+                            단어를 맞게 입력했는지 확인해보세요.
+                        </Typography>
                     </Box>
                 </Box>
             ) : (
